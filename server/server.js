@@ -5,7 +5,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-import db from './app/models.js';
+import { mongoose } from 'mongoose';
+import { DB_URL } from './app/config/db.config.js'
 import apiRouter from './app/routes.js';
 
 
@@ -24,8 +25,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // connect to mongodb
-db.mongoose
-  .connect(db.url, {
+mongoose
+  .connect(DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
