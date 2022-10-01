@@ -1,7 +1,13 @@
-require("dotenv").config();
+import express from 'express';
+import cors from 'cors';
 
-const express = require("express");
-const cors = require("cors");
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+import db from './app/models.js';
+import apiRouter from './app/routes.js';
+
 
 const app = express();
 
@@ -18,7 +24,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // connect to mongodb
-const db = require("./app/models");
 db.mongoose
   .connect(db.url, {
     useNewUrlParser: true,
@@ -32,12 +37,8 @@ db.mongoose
     process.exit();
   });
 
-// simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
-});
-
-require("./app/routes/tutorial.routes")(app);
+// use router
+app.use('/api', apiRouter);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
