@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node client.js"
+    "start": "node client.js",
+    "lint": "eslint --fix ./src"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,8 @@
   "dependencies": {
     "express": "^4.18.1",
     "http-proxy-middleware": "^2.0.6"
+  },
+  "devDependencies": {
+    "eslint": "^8.24.0"
   }
 }

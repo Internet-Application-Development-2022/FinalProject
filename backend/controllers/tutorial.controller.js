@@ -5,7 +5,7 @@ export default {
 	create(req, res) {
 		// Validate request
 		if (!req.body.title) {
-			res.status(400).send({ message: "Content can not be empty!" });
+			res.status(400).send({ message: 'Content can not be empty!' });
 			return;
 		}
 
@@ -25,14 +25,14 @@ export default {
 			.catch(err => {
 				res.status(500).send({
 					message:
-						err.message || "Some error occurred while creating the Tutorial."
+						err.message || 'Some error occurred while creating the Tutorial.'
 				});
 			});
 	},
 	// Retrieve all Tutorials from the database.
 	findAll(req, res) {
 		const title = req.query.title;
-		var condition = title ? { title: { $regex: new RegExp(title), $options: "i" } } : {};
+		var condition = title ? { title: { $regex: new RegExp(title), $options: 'i' } } : {};
 
 		Tutorial.find(condition)
 			.then(data => {
@@ -41,7 +41,7 @@ export default {
 			.catch(err => {
 				res.status(500).send({
 					message:
-						err.message || "Some error occurred while retrieving tutorials."
+						err.message || 'Some error occurred while retrieving tutorials.'
 				});
 			});
 	},
@@ -49,7 +49,7 @@ export default {
 	findOne(req, res) {
 		if (!req.body) {
 			return res.status(400).send({
-				message: "Data to update can not be empty!"
+				message: 'Data to update can not be empty!'
 			});
 		}
 
@@ -65,15 +65,16 @@ export default {
 			})
 			.catch(err => {
 				res.status(500).send({
-					message: "Error updating Tutorial with id=" + id
+					message: 'Error updating Tutorial with id=' + id
 				});
+				console.log(err);
 			});
 	},
 	// Update a Tutorial by the id in the request
 	update(req, res) {
 		if (!req.body) {
 			return res.status(400).send({
-				message: "Data to update can not be empty!"
+				message: 'Data to update can not be empty!'
 			});
 		}
 
@@ -85,12 +86,13 @@ export default {
 					res.status(404).send({
 						message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found!`
 					});
-				} else res.send({ message: "Tutorial was updated successfully." });
+				} else res.send({ message: 'Tutorial was updated successfully.' });
 			})
 			.catch(err => {
 				res.status(500).send({
-					message: "Error updating Tutorial with id=" + id
+					message: 'Error updating Tutorial with id=' + id
 				});
+				console.log(err);
 			});
 	},
 	// Delete a Tutorial with the specified id in the request
@@ -105,14 +107,15 @@ export default {
 					});
 				} else {
 					res.send({
-						message: "Tutorial was deleted successfully!"
+						message: 'Tutorial was deleted successfully!'
 					});
 				}
 			})
 			.catch(err => {
 				res.status(500).send({
-					message: "Could not delete Tutorial with id=" + id
+					message: 'Could not delete Tutorial with id=' + id
 				});
+				console.log(err);
 			});
 	},
 	// Delete all Tutorials from the database.
@@ -126,12 +129,12 @@ export default {
 			.catch(err => {
 				res.status(500).send({
 					message:
-						err.message || "Some error occurred while removing all tutorials."
+						err.message || 'Some error occurred while removing all tutorials.'
 				});
 			});
 	},
 	// Find all published Tutorials
 	findAllPublished(req, res) {
-
+		console.log(req, res);
 	}
 };

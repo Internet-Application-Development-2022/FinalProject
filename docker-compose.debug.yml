@@ -34,6 +34,8 @@ services:
       - 80:80
     networks:
       - public
+    volumes:
+      - ./frontend:/work
 
   mongodb:
     image: "mongo:6.0.2"

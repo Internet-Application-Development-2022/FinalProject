@@ -26,4 +26,4 @@ class TutorialClass {
 
 TutorialSchema.loadClass(TutorialClass);
 
-export const Tutorial = mongoose.model("tutorial", TutorialSchema);
+export const Tutorial = mongoose.model('tutorial', TutorialSchema);

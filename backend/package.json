@@ -7,7 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "debug": "nodemon --inspect-brk=0.0.0.0 -L",
-    "debuggable": "nodemon --inspect=0.0.0.0 -L"
+    "debuggable": "nodemon --inspect=0.0.0.0 -L",
+    "lint": "eslint --fix ."
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "mongoose": "^6.6.2"
   },
   "devDependencies": {
+    "eslint": "^8.24.0",
     "nodemon": "^2.0.20"
   }
 }
