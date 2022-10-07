@@ -6,8 +6,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { mongoose } from 'mongoose';
-import { DB_URL } from './app/config/db.config.js'
-import apiRouter from './app/routes.js';
+import { DB_URL } from './config/db.config.js'
+import apiRouter from './routes.js';
 
 
 const app = express();
@@ -39,7 +39,7 @@ mongoose
   });
 
 // use router
-app.use('/api', apiRouter);
+app.use(apiRouter);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

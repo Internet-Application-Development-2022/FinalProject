@@ -1,12 +1,13 @@
 {
-  "name": "finalproject",
+  "name": "finalproject-backend",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "debug": "nodemon --inspect-brk=0.0.0.0 -L"
+    "debug": "nodemon --inspect-brk=0.0.0.0 -L",
+    "debuggable": "nodemon --inspect=0.0.0.0 -L"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,25 @@
+{
+  "name": "finalproject-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "client.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node client.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Internet-Application-Development-2022/FinalProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Internet-Application-Development-2022/FinalProject/issues"
+  },
+  "homepage": "https://github.com/Internet-Application-Development-2022/FinalProject#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "http-proxy-middleware": "^2.0.6"
+  }
+}

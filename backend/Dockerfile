@@ -1,6 +1,10 @@
 FROM node:18-alpine as prod
 
-WORKDIR /code
+WORKDIR /work
+
+# default to port 80 for node
+ARG PORT=80
+ENV PORT $PORT
 
 COPY package.json ./
 
@@ -13,7 +17,11 @@ ENTRYPOINT [ "npm", "start" ]
 
 FROM node:18-alpine as debug
 
-WORKDIR /code
+WORKDIR /work
+
+# default to port 80 for node
+ARG PORT=80
+ENV PORT $PORT
 
 COPY package.json .
 
@@ -21,4 +29,4 @@ RUN npm install --include="dev"
 
 COPY . .
 
-ENTRYPOINT [ "npm", "run", "debug" ]
+ENTRYPOINT [ "npm", "run", "debuggable" ]
