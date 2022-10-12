@@ -1,11 +1,12 @@
 import { Route } from "./router.js";
+import $ from '../jquery.js';
 
 export class ShopRoute extends Route {
 	constructor() {
 		super('Shop');
 	}
 
-	onSelect(main) {
-		console.log('shop entered');
+	onSelect(content) {
+
 	}
 }

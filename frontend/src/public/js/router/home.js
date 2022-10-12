@@ -5,7 +5,7 @@ export class HomeRoute extends Route {
 		super('Home');
 	}
 
-	onSelect(main) {
-		console.log('home entered');
+	onSelect(content) {
+		
 	}
 }

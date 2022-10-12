@@ -19,7 +19,6 @@ export class Router {
 	constructor(routes, defaultIndex) {
 		this.routes = routes;
 		this.defaultIndex = defaultIndex;
-		this.selectedIndex = defaultIndex;
 
 		try {
 			if (routes.length > selectedIndex) {
@@ -47,6 +46,8 @@ export class Router {
 		}
 
 		this.selectedIndex = routeIndex;
+		this.content.empty();
+		console.log('Router: Routed to ' + this.routes[routeIndex].name);
 		this.routes[routeIndex].onSelect(this.content);
 
 		this.#callListeners(routeIndex);
@@ -54,7 +55,6 @@ export class Router {
 
 	addSelectListener(listener) {
 		this.selectListners.push(listener);
-		listener(this.routes[this.selectedIndex]);
 	}
 
 	#callListeners(routeIndex) {

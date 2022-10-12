@@ -28,4 +28,6 @@ $(() => {
 
 		$('#navbar').append($('<li>').append(button))
 	});
+
+	router.select();
 })
