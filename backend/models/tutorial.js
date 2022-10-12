@@ -1,5 +1,5 @@
 import { Schema, mongoose } from 'mongoose';
-
+import { Tutorial as TutorialClass } from '../../entities/tutorial';
 
 const TutorialSchema = Schema(
 	{
@@ -9,20 +9,6 @@ const TutorialSchema = Schema(
 	},
 	{ timestamps: true }
 );
-
-class TutorialClass {
-	title;
-	description;
-	published;
-
-	toJSON() {
-		return {
-			title: this.title,
-			description: this.description,
-			published: this.published
-		};
-	}
-}
 
 TutorialSchema.loadClass(TutorialClass);
 

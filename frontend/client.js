@@ -12,7 +12,7 @@ var corsOptions = {
 app.use(cors(corsOptions));
 */
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 // static serve frontend
 app.use(express.static('src'));
@@ -25,7 +25,7 @@ app.use('/api', createProxyMiddleware({
 
 // set port, listen for requests
 const PORT = process.env.PORT || 80;
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}.`);
 });
 

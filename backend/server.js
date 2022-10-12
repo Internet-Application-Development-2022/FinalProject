@@ -1,30 +1,29 @@
-import express from 'express';
-import cors from 'cors';
-
 import dotenv from 'dotenv';
-
 dotenv.config();
 
-import { mongoose } from 'mongoose';
-import { DB_URL } from './config/db.config.js';
-import apiRouter from './routes.js';
 
-
+import express from 'express';
 const app = express();
 
-var corsOptions = {
-	origin: 'http://localhost:8081'
-};
+import session from 'express-session';
+app.use(session({
+	secret: 'foo',
+	saveUninitialized: false,
+	resave: false
+}));
 
-app.use(cors(corsOptions));
+import helmet from 'helmet';
+app.use(helmet());
 
 // parse requests of content-type - application/json
 app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 // connect to mongodb
+import { DB_URL } from './config/db.config.js';
+import { mongoose } from 'mongoose';
 mongoose
 	.connect(DB_URL, {
 		useNewUrlParser: true,
@@ -39,6 +38,7 @@ mongoose
 	});
 
 // use router
+import apiRouter from './routes.js';
 app.use(apiRouter);
 
 // set port, listen for requests
