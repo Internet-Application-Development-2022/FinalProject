@@ -24,6 +24,7 @@ services:
       - backend
     build:
       context: ./frontend
+      target: prod
     ports:
       - 80:80
     networks:
