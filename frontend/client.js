@@ -8,7 +8,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 
 // static serve frontend
-app.use('/', express.static('public'));
+app.use('/', express.static('src'));
 
 // proxy backend api and websocket
 app.use('/api', createProxyMiddleware({
