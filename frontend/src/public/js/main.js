@@ -1,7 +1,12 @@
 import $ from 'jquery';
 import { io } from "socket.io-client";
 
-import { PageRouter } from './routes.js';
+import { PageRouter, HomePage, ShopPage } from './routes.js';
+
+const NAVIGATION_PAGES = [
+	HomePage,
+	ShopPage
+]
 
 $(() => {
 	//const socket = io();
@@ -10,7 +15,7 @@ $(() => {
 
 	$('#header > a').on('click', () => PageRouter.go());
 
-	Object.values(PageRouter.routes).forEach(route => {
+	NAVIGATION_PAGES.forEach(route => {
 		const button = $('<a>')
 			.text(route.name)
 			.on('click', () => PageRouter.go(route));

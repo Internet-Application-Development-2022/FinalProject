@@ -4,13 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store</title>
+    <title>Shop</title>
+	<script type="importmap">
+		{
+		  "imports": {
+			"jquery-src": "/public/CDN/jquery-3.6.1.min.js",
+			"jquery": "/public/CDN/jquery.js",
+			"socket.io-client": "/public/CDN/socket.io.esm.min.js"
+		  }
+		}
+	</script>
     <link href="/public/CDN/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet"
         integrity="sha384-xeJqLiuOvjUBq3iGOjvSQSIlwrpqjSHXpduPd6rQpuiM3f5/ijby8pCsnbu5S81n" />
     <link href="/public/CDN/bootstrap@5.2.2/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-wpMrDdCyrWWMh7jp301ZVf5iM1FHIfHA6cmCdcayg7zBZm0KfYJt8GBunp2YMK7p" />
     <link href="/public/css/style.css" rel="stylesheet" />
+	<script type="module" src="/public/CDN/jquery.js"></script>
 </head>
 
 <body>
@@ -28,7 +37,7 @@
         </div>
     </header>
     <!-- Products -->
-    <section id="proudct1" class="section-p1">
+    <section id="products" class="section-p1">
         <div class="pro-container">
             <div class="pro">
                 <a href="product.html"><img src="/public/img/products/f1.jpg" alt=""></a>

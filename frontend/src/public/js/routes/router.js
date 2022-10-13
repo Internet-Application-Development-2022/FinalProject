@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 export class Route {
 	name;
 
@@ -29,17 +27,29 @@ export class Router {
 		};
 	}
 
+	static #getRawCurrentRoute() {
+		return window.location.hash.substring(1);
+	}
+
 	static getCurrentRoute() {
 		return Router.#parseRoute(
-			window.location.hash.substring(1)
+			Router.#getRawCurrentRoute()
 		);
 	}
 
+	static #genParamHash(args) {
+		if (!args) return '';
+		return '?' + (
+			Object.entries(args).map(([key, val]) => `${key}=${val}`)
+		).join('&');
+	}
+
+	static #genLocationHash(route, args) {
+		return route + Router.#genParamHash(args);
+	}
+
 	static setLocationHash(route, args) {
-		window.location.hash = route.toString() + (
-			args ? '?' + '&'.join(Object.entries(args).map(([key, val]) => `${key}=${val}`))
-			: ''
-		);
+		window.location.hash = Router.#genLocationHash(route, args);
 	}
 
 	static getRouteName(route) {
@@ -60,26 +70,34 @@ export class Router {
 		}
 		
 		if(!(content instanceof HTMLElement)) {
-			throw 'Router must recieve HTMLElement content, got: ' + content.toString();
+			throw 'Router must recieve HTMLElement content, got: ' + content?.toString();
 		}
 		this.content = content;
 
 		this.handleHashChangeEvent();
-		$(window).on('hashchange', () => this.handleHashChangeEvent());
+		window.addEventListener('hashchange', () => this.handleHashChangeEvent());
 	}
 
 	handleHashChangeEvent() {
+		while(this.content.firstChild){
+			this.content.removeChild(this.content.firstChild);
+		}
+
 		let { route, params } = Router.getCurrentRoute();
 
+		console.log(`Router: Arrived at "${Router.#getRawCurrentRoute()}"`);
+
+		document.title = route;
 		let page = this.getRouteFromName(route);
+
+		if (page === undefined) {
+			this.go();
+			return;
+		}
 
 		page.onSelect(this.content, params);
 
 		this.#callListeners(page);
-	}
-
-	isSelected(route) {
-		return Router.getRouteName(route) === Router.getCurrentRoute().route;
 	}
 
 	go(route, params) {
@@ -97,14 +115,18 @@ export class Router {
 			params = undefined;
 		}
 
-		this.content.empty();
-		console.log(`Router: Go to "${page}"`);
+		console.log(`Router: Go to "${Router.#genLocationHash(page, params)}"`);
+
+		if(Router.#genLocationHash(page, params) === Router.#getRawCurrentRoute()) {
+			this.handleHashChangeEvent();
+			return;
+		}
 
 		Router.setLocationHash(page, params);
 	}
 
-	addSelectListener(listener) {
-		this.selectListners.push(listener);
+	isSelected(route) {
+		return Router.getRouteName(route) === Router.getCurrentRoute().route;
 	}
 
 	getRouteFromName(route) {
@@ -113,13 +135,20 @@ export class Router {
 				: undefined;
 	}
 
+	addSelectListener(listener) {
+		this.#callListener(listener, this.defaultRoute);
+		this.selectListners.push(listener);
+	}
+
 	#callListeners(route) {
-		this.selectListners.forEach(list => {
-			try {
-				list(route);
-			} catch (e) {
-				console.log('Router select listener failed', e);
-			}
-		})
+		this.selectListners.forEach(list => this.#callListener(list, route))
+	}
+
+	#callListener(list, route) {
+		try {
+			list(route);
+		} catch (e) {
+			console.log('Router select listener failed', e);
+		}
 	}
 }
