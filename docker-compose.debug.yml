@@ -26,16 +26,16 @@ services:
 
   frontend:
     container_name: finalproject-frontend
-    depends_on:
-      - backend
     build:
       context: ./frontend
+      target: debug
     ports:
       - 80:80
     networks:
       - public
     volumes:
       - ./frontend:/work
+      - /work/node_modules
 
   mongodb:
     image: "mongo:6.0.2"

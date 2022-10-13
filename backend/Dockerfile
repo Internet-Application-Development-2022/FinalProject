@@ -6,7 +6,7 @@ WORKDIR /work
 ARG PORT=80
 ENV PORT $PORT
 
-COPY package.json ./
+COPY package.json .
 
 RUN npm install
 

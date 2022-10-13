@@ -7,6 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node client.js",
+    "debug": "nodemon client.js",
     "lint": "eslint --fix ./src"
   },
   "repository": {
@@ -24,6 +25,7 @@
     "http-proxy-middleware": "^2.0.6"
   },
   "devDependencies": {
-    "eslint": "^8.24.0"
+    "eslint": "^8.24.0",
+    "nodemon": "^2.0.20"
   }
 }

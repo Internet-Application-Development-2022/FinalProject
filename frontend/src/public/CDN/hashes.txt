@@ -1,0 +1,14 @@
+bootstrap-icons@1.9.1/font/bootstrap-icons.css      sha384-xeJqLiuOvjUBq3iGOjvSQSIlwrpqjSHXpduPd6rQpuiM3f5/ijby8pCsnbu5S81n
+bootstrap@5.2.2/css/bootstrap-grid.min.css          sha384-Su/YueXpyLtsQ2qUVASVUeDOObw7SlqeMkFMhytNMNS21HBMfyGa5p6yIr6CAVco
+bootstrap@5.2.2/css/bootstrap-grid.rtl.min.css      sha384-CAPxc3ooeO2lmdLeWlbCcXfRqRVXrknC4B54Ifb4M5vQnQPSLOV3n6Nt0hEku1dN
+bootstrap@5.2.2/css/bootstrap-reboot.min.css        sha384-BbfaHBo3FLjNNCd7cGKQfU5TZEU+gYxS22j2drLOCNWi3kwLMY9vixwvvPJeEOx6
+bootstrap@5.2.2/css/bootstrap-reboot.rtl.min.css    sha384-bKpNCMwsNy6kPUKUHY2iku8eJ4ju7jawnv0fAE8JsXaFTghJUnOlRFZlcBBvJ2bR
+bootstrap@5.2.2/css/bootstrap-utilities.min.css     sha384-I19KHFzcY9rCb5ojnPW/XdM2oJ0EcY7GyzH3yErM0c8T15mNSii/q8uY3iVwCzqV
+bootstrap@5.2.2/css/bootstrap-utilities.rtl.min.css sha384-7cPqTEwbJdowEbjLP/Qivzw5TwgLpnFlA3gWquAMkTrPH/sb3Lhv694hXBHn2CCh
+bootstrap@5.2.2/css/bootstrap.min.css               sha384-wpMrDdCyrWWMh7jp301ZVf5iM1FHIfHA6cmCdcayg7zBZm0KfYJt8GBunp2YMK7p
+bootstrap@5.2.2/css/bootstrap.rtl.min.css           sha384-sniNrqSBF8FAoidnvWpQRPNnPXtoNtnlpbETb3eqWaQmyEwhJQlhf+95i3mqaxBH
+bootstrap@5.2.2/js/bootstrap.bundle.min.js          sha384-LfW4Sy74hXD8COFROOqMMooe1F9AR0iyRuznxeOFvDcapZOb3PK7W3doXS7de/oi
+bootstrap@5.2.2/js/bootstrap.esm.min.js             sha384-N5/+MGuNEYUIkBMNvEiY+b+wlB7cSeoBrGzbm8sQcH/5arjiDh90ciTZXDCW0qw8
+bootstrap@5.2.2/js/bootstrap.min.js                 sha384-6PmbhS/6/dDvHA/ZDmQwyzcAyeFUW/C1Mf72Iwy1kwzHhVNakWUHGbOsfnsmviAl
+jquery-3.6.1.min.js                                 sha384-jltq+F3EJME8HG5ruLdmZvnU9RWZYHY7izAZQAtrAe7Y/yzr87IyxdxcCxjqxmVK
+socket.io.esm.min.js                                sha384-Yxgs1veK5zz0TS6sdcDay5w3mblZ2XNWvm1Uz/KITg0TD6u9YSqF684d6GpPuWjl
