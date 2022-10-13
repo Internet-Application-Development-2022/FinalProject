@@ -1,12 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Final Project</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<script type="importmap">
+		{
+		  "imports": {
+			"jquery-src": "/public/CDN/jquery-3.6.1.min.js",
+			"jquery": "/public/CDN/jquery.js",
+			"socket.io-client": "/public/CDN/socket.io.esm.min.js"
+		  }
+		}
+	</script>
+	<link href="/public/CDN/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet"
+		integrity="sha384-xeJqLiuOvjUBq3iGOjvSQSIlwrpqjSHXpduPd6rQpuiM3f5/ijby8pCsnbu5S81n" />
+	<link href="/public/CDN/bootstrap@5.2.2/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-wpMrDdCyrWWMh7jp301ZVf5iM1FHIfHA6cmCdcayg7zBZm0KfYJt8GBunp2YMK7p" />
+	<link href="/public/css/style.css" rel="stylesheet" />
+	<script type="module" src="/public/js/main.js"></script>
 </head>
+
 <body>
-    <h1>Final Project</h1>
-    <p>Hello World</p>
+	<!-- Menu -->
+	<header id="header">
+		<a><img src="/public/img/logo.png" class="logo" alt="logo"></a>
+		<div>
+			<ul id="navbar"></ul>
+		</div>
+	</header>
+	<main></main>
+	<div style="flex-grow: 1;"></div>
+	<!-- Footer -->
+	<footer class="section-p1">
+		<div class="col">
+			<img class="logo" src="/public/img/logo.png" alt="Logo">
+			<h4>Contacts</h4>
+			<p><strong>Address:</strong>Eli Vizel, 2, Rishon-Lezion</p>
+			<p><strong>Phone:</strong>+972 52-5381648</p>
+			<div class="follow">
+				<h4>Follow Us</h4>
+				<div class="icon">
+					<i class="bi bi-facebook"></i>
+					<i class="bi bi-twitter"></i>
+					<i class="bi bi-instagram"></i>
+					<i class="bi bi-pinterest"></i>
+					<i class="bi bi-youtube"></i>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<h4>About</h4>
+			<a href="#">About Us</a>
+			<a href="#">Delivery Inforamtion</a>
+			<a href="#">Parivate Policy</a>
+			<a href="#">Terms & Conditions</a>
+			<a href="#">Contact Us</a>
+		</div>
+		<div class="col">
+			<h4>My Account</h4>
+			<a href="#">Sing In</a>
+			<a href="#">View Cart</a>
+			<a href="#">My Wishlist</a>
+			<a href="#">Track My Orders</a>
+			<a href="#">Help</a>
+		</div>
+		<div class="col install">
+			<h4>Install App</h4>
+			<p>From Apple Stroe or Google Play</p>
+			<div class="row">
+				<img src="/public/img/pay/app.jpg" alt="Apple">
+				<img src="/public/img/pay/play.jpg" alt="Google">
+			</div>
+			<p>Secured Payment Getways</p>
+			<img src="/public/img/pay/pay.png" alt="Pay">
+		</div>
+		<div class="copyright">
+			<p>@ 2022, Final Projet - Tom, Nir And Avi</p>
+		</div>
+	</footer>
 </body>
+
 </html>

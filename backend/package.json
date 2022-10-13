@@ -31,8 +31,8 @@
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
-    "helmet": "^6.0.0",
-    "mongoose": "^6.6.2"
+    "mongoose": "^6.6.2",
+    "socket.io": "^4.5.2"
   },
   "devDependencies": {
     "eslint": "^8.24.0",

@@ -1,5 +1,4 @@
 # Final Project
-
 ## Technical Requirments
 * Node Express Backend
 * Mongo DB
