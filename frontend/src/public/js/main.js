@@ -1,4 +1,4 @@
-import $ from './jquery.js';
+import $ from 'jquery';
 import { io } from "socket.io-client";
 
 import router from './routes.js';

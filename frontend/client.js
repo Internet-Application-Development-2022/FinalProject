@@ -1,4 +1,5 @@
 /* eslint-disable */
+console.log(`Starting up frontend in ${process.env.PROD ? 'PRODUCTION' : 'DEVELOPMENT'} mode`);
 
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
@@ -9,6 +10,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // static serve frontend
 app.use('/', express.static('src'));
+
+if (!process.env.PROD) {
+	console.log('Loading JS map files');
+	app.use('/public/source/', express.static('source'));
+}
 
 // proxy backend api and websocket
 app.use('/api', createProxyMiddleware({

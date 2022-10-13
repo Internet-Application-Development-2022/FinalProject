@@ -1,6 +1,6 @@
-import { Router } from "./router/router.js";
-import { HomeRoute } from "./router/home.js";
-import { ShopRoute } from "./router/shop.js";
+import { Router } from "./routes/router.js";
+import { HomeRoute } from "./routes/home.js";
+import { ShopRoute } from "./routes/shop.js";
 
 
 export default new Router([
