@@ -327,6 +327,23 @@ footer .copyright {
 
 
 /* ---------------- Shop Page ---------------- */
+#filters-con {
+   text-align: center;
+   display: flex;
+   padding-top: 20px;
+   flex-wrap: wrap;
+}
+#filters-con .btn {
+   width: 120px;
+}
+#filter {
+   margin-right: 15px;
+}
+.list-group{
+   margin-top: 10px;
+   width: 120px;
+}
+
 #Shop-header {
 
    display: flex;

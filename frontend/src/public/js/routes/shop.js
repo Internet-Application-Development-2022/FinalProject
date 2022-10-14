@@ -41,11 +41,24 @@ export class ShopRoute extends Route {
 
 		$(content)
 			.append(
+				this.genProductfilter()
+			)
+			.append(
 				this.genProductConteiner()
 			)
 			.append(
 				this.genNavElement()
 			)
+		
+		$(document).ready(function(){
+			$(".but-cat").click(function(){
+			  $('#list-cat').toggle();
+			});
+			$(".but-sel").click(function(){
+				$('#list-sel').toggle();
+			  });
+		});
+			
 	}
 
 	async fetchTotalProductsAmount() {
@@ -74,7 +87,80 @@ export class ShopRoute extends Route {
 			}
 		);
 	}
-
+	genProductfilter() {
+		return $('<section>')
+			.attr('id', 'filters-con')
+			.addClass('section-p1')
+			.append($('<span>').text('Filter:').attr('id','filter'))
+			.append(
+				$('<div>')
+					.append(
+						$('<Button>').text('Catagory')
+							.addClass('btn btn-secondary dropdown-toggle but-cat')
+							.attr('id','filter')
+					)
+					.append(
+						$('<ul>')
+							.addClass('list-group')
+							.attr('id','list-cat')
+							.append(
+								$('<li>')
+									.addClass('list-group-item')
+									.append(
+										$('<a>').text('Shirts')
+									)
+							)
+							.append(
+								$('<li>')
+									.addClass('list-group-item')
+									.append(
+										$('<a>').text('Pants')
+									)
+							)
+							.append(
+								$('<li>')
+									.addClass('list-group-item')
+									.append(
+										$('<a>').text('Shoes')
+									)
+							)
+					))
+			.append(
+				$('<div>')
+					.append(
+						$('<Button>').text('Seller')
+							.addClass('btn btn-secondary dropdown-toggle but-sel')
+							.attr('id', 'filter')
+					)
+					.append(
+						$('<ul>')
+							.addClass('list-group')
+							.attr('id','list-sel')
+							.append(
+								$('<li>')
+									.addClass('list-group-item')
+									.append(
+										$('<a>').text('Nir')
+									)
+							)
+							.append(
+								$('<li>')
+									.addClass('list-group-item')
+									.append(
+										$('<a>').text('Tom')
+									)
+							)
+							.append(
+								$('<li>')
+									.addClass('list-group-item')
+									.append(
+										$('<a>').text('Avi')
+									)
+							)
+					))
+					
+		;
+	}
 	genProductConteiner() {
 		return $('<section>')
 			.attr('id', 'products')
@@ -141,4 +227,5 @@ export class ShopRoute extends Route {
 			.addClass('section-p1')
 			.append(navButtons);
 	}
+
 }
