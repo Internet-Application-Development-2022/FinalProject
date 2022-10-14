@@ -1,4 +1,20 @@
 # Final Project
+
+## To Do
+* backend
+  * connect with front
+  * create models
+  * admin page
+  * socket.io
+* about page
+  * map
+  * api - twitter #amazon usage
+  * video
+  * canvas - base64 signature image
+* shop page
+  * filter
+* new supplier contact page
+
 ## Technical Requirments
 * Node Express Backend
 * Mongo DB
