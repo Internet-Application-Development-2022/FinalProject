@@ -1,12 +1,12 @@
 import $ from 'jquery';
-import { io } from "socket.io-client";
+import { io } from 'socket.io-client';
 
 import { PageRouter, HomePage, ShopPage } from './routes.js';
 
 const NAVIGATION_PAGES = [
 	HomePage,
 	ShopPage
-]
+];
 
 $(() => {
 	//const socket = io();
@@ -27,10 +27,10 @@ $(() => {
 			else {
 				button.removeClass('active');
 			}
-		})
+		});
 
 		$('#navbar').append(
 			$('<li>').append(button)
-		)
+		);
 	});
-})
+});

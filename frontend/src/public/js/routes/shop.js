@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import { Route } from "./router.js";
-import { PageRouter, ProductPage } from "../routes.js";
+import { Route } from './router.js';
+import { PageRouter, ProductPage } from '../routes.js';
 
 export class ShopRoute extends Route {
 	totalProductsAmount;
@@ -37,7 +37,7 @@ export class ShopRoute extends Route {
 			return;
 		}
 
-		await this.fetchProducts(this.page, ShopRoute.PRODUCTS_PER_PAGE);
+		await this.fetchProducts(this.page);
 
 		$(content)
 			.append(
@@ -45,14 +45,14 @@ export class ShopRoute extends Route {
 			)
 			.append(
 				this.genNavElement()
-			)
+			);
 	}
 
 	async fetchTotalProductsAmount() {
-		return 20;
+		return 100;
 	}
 
-	async fetchProducts(page, amountInPage) {
+	async fetchProducts(page) {
 		if (!this.fetchedProducts) {
 			this.fetchedProducts = Array(this.totalPagesAmount);
 		}
@@ -61,7 +61,7 @@ export class ShopRoute extends Route {
 			return;
 		}
 
-		this.fetchedProducts[page] = Array(Math.min(this.totalProductsAmount - page * amountInPage, amountInPage)).fill(
+		this.fetchedProducts[page] = Array(Math.min(this.totalProductsAmount - page * ShopRoute.PRODUCTS_PER_PAGE, ShopRoute.PRODUCTS_PER_PAGE)).fill(
 			{
 				id: 1,
 				name: 'T-shirts 1',
@@ -124,7 +124,7 @@ export class ShopRoute extends Route {
 				.append($('<i>')
 					.addClass('bi bi-arrow-left')
 				)
-			)
+			);
 		}
 
 		if (this.page < this.totalPagesAmount - 1) {
@@ -133,7 +133,7 @@ export class ShopRoute extends Route {
 				.append($('<i>')
 					.addClass('bi bi-arrow-right')
 				)
-			)
+			);
 		}
 
 		return $('<section>')

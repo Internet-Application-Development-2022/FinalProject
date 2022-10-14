@@ -6,6 +6,6 @@ export class HomeRoute extends Route {
 	}
 
 	onSelect(content) {
-		
+
 	}
 }
