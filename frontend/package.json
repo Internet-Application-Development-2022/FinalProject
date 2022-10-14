@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node client.js",
     "debug": "nodemon client.js",
-    "lint": "eslint --fix ./src"
+    "lint": "eslint --fix ./src/public/js"
   },
   "repository": {
     "type": "git",

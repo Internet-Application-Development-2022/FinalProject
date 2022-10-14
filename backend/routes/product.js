@@ -3,6 +3,7 @@ import { Router } from 'express';
 import products from '../controllers/product.js';
 
 export default Router()
+	.get('/amount', products.amount)
 	.post('/', products.create)
 	.get('/', products.findAll)
 	.get('/:id', products.findOne)

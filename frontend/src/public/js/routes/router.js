@@ -9,7 +9,7 @@ export class Route {
 		this.name = name;
 	}
 
-	onSelect(content, params) { }
+	onSelect(content, params) { } // eslint-disable-line no-unused-vars
 }
 
 export class Router {
@@ -23,7 +23,7 @@ export class Router {
 		let [route, params] = routeString.split('?', 2);
 		return {
 			route,
-			params: new URLSearchParams(params)
+			params: Object.fromEntries(new URLSearchParams(params))
 		};
 	}
 
@@ -61,7 +61,7 @@ export class Router {
 	constructor(defaultRoute, content, routes) {
 		routes.forEach(r => {
 			this.routes[r.name] = r;
-		})
+		});
 
 		this.defaultRoute = this.getRouteFromName(defaultRoute);
 
@@ -141,7 +141,7 @@ export class Router {
 	}
 
 	#callListeners(route) {
-		this.selectListners.forEach(list => this.#callListener(list, route))
+		this.selectListners.forEach(list => this.#callListener(list, route));
 	}
 
 	#callListener(list, route) {

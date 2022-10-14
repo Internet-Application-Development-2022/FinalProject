@@ -59,6 +59,7 @@ export default {
 
 		Product
 			.find()
+			.sort({ updatedAt: 'desc' })
 			.skip(page * size)
 			.limit(size)
 			.then(data => {
@@ -185,7 +186,20 @@ export default {
 			.catch(err => {
 				res.status(500).send({
 					message:
-						err.message || 'Some error occurred while removing all tutorials.'
+						err.message || 'an error occurred while removing all products.'
+				});
+			});
+	},
+	amount(req, res) {
+		Product
+			.count()
+			.then(data => {
+				res.send(`${data}`);
+			})
+			.catch(err => {
+				res.status(500).send({
+					message:
+						err.message || 'an error occurred while receiving products amount'
 				});
 			});
 	}

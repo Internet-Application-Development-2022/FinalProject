@@ -1,4 +1,4 @@
-import { Route } from "./router.js";
+import { Route } from './router.js';
 
 export class ProductRoute extends Route {
 	constructor() {
