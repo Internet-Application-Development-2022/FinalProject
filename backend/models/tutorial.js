@@ -1,5 +1,5 @@
 import { Schema, mongoose } from 'mongoose';
-import { Tutorial as TutorialClass } from '../../entities/tutorial';
+import { Tutorial as TutorialClass } from '../entities.js';
 
 const TutorialSchema = Schema(
 	{
