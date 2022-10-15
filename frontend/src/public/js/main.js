@@ -21,7 +21,7 @@ $(() => {
 			.on('click', () => PageRouter.go(route));
 
 		PageRouter.addSelectListener(selected => {
-			if (route === selected) {
+			if (PageRouter.isSelected(route)) {
 				button.addClass('active');
 			}
 			else {

@@ -3,15 +3,29 @@ import { Route } from './router.js';
 import { PageRouter, ProductPage } from '../routes.js';
 
 export class ShopRoute extends Route {
-	totalProductsAmount;
 	fetchedProducts;
+	filteredProducts;
 	params;
 	page;
 
 	static get PRODUCTS_PER_PAGE() { return 16; }
 
+	static get FILTERS() { return [
+		'catagory',
+		'seller',
+		'priceMin',
+		'priceMax',
+	]}
+
+	get totalProductsAmount() {
+		return this.filteredProducts?.length;
+	}
+
 	get products() {
-		return this.fetchedProducts[this.page];
+		return this.filteredProducts.slice(
+			this.page * ShopRoute.PRODUCTS_PER_PAGE,
+			(this.page + 1) * ShopRoute.PRODUCTS_PER_PAGE
+		);
 	}
 
 	get totalPagesAmount() {
@@ -24,6 +38,12 @@ export class ShopRoute extends Route {
 		super('Shop');
 	}
 
+	/*
+	param: {
+		page: 2,
+		catagory: 'shirts'
+	}
+	*/
 	async onSelect(content, params) {
 		this.params = params;
 		this.page = parseInt(params?.page, 10);
@@ -31,19 +51,21 @@ export class ShopRoute extends Route {
 		if (Number.isNaN(this.page)) {
 			this.page = 0;
 		}
+		
+		await this.fetchProducts();
 
-		this.totalProductsAmount = await this.fetchTotalProductsAmount();
+		// if filter changed, clear saved data
 
-		if (0 < this.totalPagesAmount && this.totalPagesAmount <= this.page) {
-			PageRouter.go(this);
+		this.filterProducts();
+
+		if (this.page < 0 || (0 < this.totalPagesAmount && this.totalPagesAmount <= this.page)) {
+			PageRouter.go(this, { ...this.params, page: 0 });
 			return;
 		}
 
-		await this.fetchProducts(this.page);
-
 		$(content)
 			.append(
-				this.genProductfilter()
+				this.genProductFilter()
 			)
 			.append(
 				this.genProductConteiner()
@@ -53,66 +75,67 @@ export class ShopRoute extends Route {
 			);
 	}
 
-	async fetchTotalProductsAmount() {
-		return parseInt(await (await fetch('/api/products/amount'))?.text(), 10);
-	}
-
-	async fetchProducts(page) {
-		if (!this.fetchedProducts) {
-			this.fetchedProducts = Array(this.totalPagesAmount);
-		}
-
-		if(this.fetchedProducts[page] !== undefined) {
+	async fetchProducts() {
+		if (this.fetchedProducts) {
 			return;
 		}
 
-		this.fetchedProducts[page] =
-			await (await fetch(`/api/products?size=${ShopRoute.PRODUCTS_PER_PAGE}&page=${page}`))?.json();
+		this.fetchedProducts = await (await fetch('/api/products'))?.json();
 	}
 
-	genProductfilter() {
+	filterProducts() {
+		this.filteredProducts = [...this.fetchedProducts];
+
+		[
+			'catagory',
+			'seller'
+		].filter(key => key in this.params && this.params[key])
+		.forEach(filterKey => {
+			const filterValue = this.params[filterKey];
+
+			this.filteredProducts = this.filteredProducts.filter(prod => prod[filterKey] === filterValue)
+		})
+        /*
+		'catagory',
+		'seller',
+		'priceMin',
+		'priceMax',
+		*/
+	}
+
+	genProductFilter() {
 		return $('<section>')
 			.attr('id', 'filters-con')
 			.addClass('section-p1')
 			.append($('<span>').text('Filter:').attr('id','filter'))
-			.append(
-				$('<div>')
-					.append(
-						$('<Button>').text('Catagory')
-							.addClass('btn btn-secondary dropdown-toggle but-cat')
-							.attr('id','filter')
-							.on('click',() => $('#list-cat').toggle())
-						
+			.append($('<div>')
+				.append(
+					$('<Button>').text('Catagory: ' + (this.params?.catagory || 'All'))
+						.addClass('btn btn-secondary dropdown-toggle but-cat')
+						.attr('id','filter')
+						.on('click',() => $('#list-cat').toggle())
+					
+				)
+				.append($('<ul>')
+					.addClass('list-group')
+					.attr('id','list-cat')
+					.hide()
+					.append(/*
+						$('<li>')
+							.addClass('list-group-item')
+							.append(
+								$('<a>').text('Shirts')
+								.on('click',this.filter('Shirts'))
+							)*/
+						[
+							this.genFilterDropdown('catagory', '', 'All'),
+							this.genFilterDropdown('catagory', 'catagory 1'),
+							this.genFilterDropdown('catagory', 'catagory 2'),
+							this.genFilterDropdown('catagory', 'catagory 3'),
+						]
 					)
-					.append(
-						$('<ul>')
-							.addClass('list-group')
-							.attr('id','list-cat')
-							.hide()
-							.append(
-								$('<li>')
-									.addClass('list-group-item')
-									.append(
-										$('<a>').text('Shirts')
-										.on('click',this.filter('Shirts'))
-									)
-							)
-							.append(
-								$('<li>')
-									.addClass('list-group-item')
-									.append(
-										$('<a>').text('Pants')
-										.on('click',this.filter('Pants'))
-									)
-							)
-							.append(
-								$('<li>')
-									.addClass('list-group-item')
-									.append(
-										$('<a>').text('Shoes')
-									)
-							)
-					))
+				)
+			)
 			.append(
 				$('<div>')
 					.append(
@@ -151,93 +174,19 @@ export class ShopRoute extends Route {
 		;
 	}
 
-	filter(filt){
-		$( ".pro" ).each(function() {
-			if(this.catagory!=filt)
-			console.log(this);
-			$(this).hide();
-		  });
-	}
-	genProductfilter() {
-		return $('<section>')
-			.attr('id', 'filters-con')
-			.addClass('section-p1')
-			.append($('<span>').text('Filter:').attr('id','filter'))
+	genFilterDropdown(key, value, text) {
+		const pageParams = { ...this.params };
+		pageParams[key] = value;
+
+		return $('<li>')
+			.addClass('list-group-item')
 			.append(
-				$('<div>')
-					.append(
-						$('<Button>').text('Catagory')
-							.addClass('btn btn-secondary dropdown-toggle but-cat')
-							.attr('id','filter')
-							.on('click',() => $('#list-cat').toggle())
-						
-					)
-					.append(
-						$('<ul>')
-							.addClass('list-group')
-							.attr('id','list-cat')
-							.hide()
-							.append(
-								$('<li>')
-									.addClass('list-group-item')
-									.append(
-										$('<a>').text('Shirts')
-										.on('click',this.filter('Shirts'))
-									)
-							)
-							.append(
-								$('<li>')
-									.addClass('list-group-item')
-									.append(
-										$('<a>').text('Pants')
-										.on('click',this.filter('Pants'))
-									)
-							)
-							.append(
-								$('<li>')
-									.addClass('list-group-item')
-									.append(
-										$('<a>').text('Shoes')
-									)
-							)
-					))
-			.append(
-				$('<div>')
-					.append(
-						$('<Button>').text('Seller')
-							.addClass('btn btn-secondary dropdown-toggle but-sel')
-							.attr('id', 'filter')
-							.on('click',() => $('#list-sel').toggle())
-					)
-					.append(
-						$('<ul>')
-							.addClass('list-group')
-							.attr('id','list-sel')
-							.append(
-								$('<li>')
-									.addClass('list-group-item')
-									.append(
-										$('<a>').text('Nir')
-									)
-							)
-							.append(
-								$('<li>')
-									.addClass('list-group-item')
-									.append(
-										$('<a>').text('Tom')
-									)
-							)
-							.append(
-								$('<li>')
-									.addClass('list-group-item')
-									.append(
-										$('<a>').text('Avi')
-									)
-							)
-					))
-					
-		;
+				$('<a>')
+					.text(text || value)
+					.on('click', () => PageRouter.go(this, pageParams))
+			)
 	}
+
 	genProductConteiner() {
 		return $('<section>')
 			.attr('id', 'products')
@@ -252,7 +201,7 @@ export class ShopRoute extends Route {
 	genProductElement(product) {
 		return $('<div>')
 			.addClass('pro')
-			.on('click', () => PageRouter.go(ProductPage, { ...this.params, id: product._id }))
+			.on('click', () => PageRouter.go(ProductPage, { id: product._id }))
 			.append(
 				$('<img>')
 					.attr('src', product.img)
