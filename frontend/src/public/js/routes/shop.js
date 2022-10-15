@@ -10,12 +10,14 @@ export class ShopRoute extends Route {
 
 	static get PRODUCTS_PER_PAGE() { return 16; }
 
-	static get FILTERS() { return [
-		'catagory',
-		'seller',
-		'priceMin',
-		'priceMax',
-	]}
+	static get FILTERS() {
+		return [
+			'catagory',
+			'seller',
+			'priceMin',
+			'priceMax',
+		]
+	}
 
 	get totalProductsAmount() {
 		return this.filteredProducts?.length;
@@ -51,7 +53,7 @@ export class ShopRoute extends Route {
 		if (Number.isNaN(this.page)) {
 			this.page = 0;
 		}
-		
+
 		await this.fetchProducts();
 
 		// if filter changed, clear saved data
@@ -64,6 +66,9 @@ export class ShopRoute extends Route {
 		}
 
 		$(content)
+			.append(
+				this.genStoreHeader()
+			)
 			.append(
 				this.genProductFilter()
 			)
@@ -85,40 +90,44 @@ export class ShopRoute extends Route {
 
 	filterProducts() {
 		this.filteredProducts = [...this.fetchedProducts];
-
 		[
 			'catagory',
 			'seller'
 		].filter(key => key in this.params && this.params[key])
-		.forEach(filterKey => {
-			const filterValue = this.params[filterKey];
-
-			this.filteredProducts = this.filteredProducts.filter(prod => prod[filterKey] === filterValue)
-		})
-        /*
+			.forEach(filterKey => {
+				const filterValue = this.params[filterKey];
+				this.filteredProducts = this.filteredProducts.filter(prod => prod[filterKey] === filterValue)
+			})
+		/*
 		'catagory',
 		'seller',
 		'priceMin',
 		'priceMax',
 		*/
 	}
-
+	genStoreHeader() {
+		return $('<section>')
+			.attr('id', 'Shop-header')
+			.append($('<h2>').text('Shop'))
+			.append($('<h1>').text('Up to 50% off!'))
+	}
 	genProductFilter() {
 		return $('<section>')
 			.attr('id', 'filters-con')
 			.addClass('section-p1')
-			.append($('<span>').text('Filter:').attr('id','filter'))
+			.append($('<span>').text('Apply filters:').attr('id', 'filter-text'))
 			.append($('<div>')
 				.append(
-					$('<Button>').text('Catagory: ' + (this.params?.catagory || 'All'))
+					$('<Button>')
+						.text('Catagory: ' + (this.params?.catagory || 'All'))
 						.addClass('btn btn-secondary dropdown-toggle but-cat')
-						.attr('id','filter')
-						.on('click',() => $('#list-cat').toggle())
-					
+						.attr('id', 'filter')
+						.on('click', () => $('#list-cat').toggle())
+
 				)
 				.append($('<ul>')
 					.addClass('list-group')
-					.attr('id','list-cat')
+					.attr('id', 'list-cat')
 					.hide()
 					.append(/*
 						$('<li>')
@@ -136,42 +145,24 @@ export class ShopRoute extends Route {
 					)
 				)
 			)
-			.append(
-				$('<div>')
-					.append(
-						$('<Button>').text('Seller')
-							.addClass('btn btn-secondary dropdown-toggle but-sel')
-							.attr('id', 'filter')
-							.on('click',() => $('#list-sel').toggle())
+			.append($('<div>')
+				.append(
+					$('<Button>')
+					.text('Seller: ' + (this.params?.seller || 'All'))
+					.addClass('btn btn-secondary dropdown-toggle but-sel')
+					.attr('id', 'filter')
+					.on('click', () => $('#list-sel').toggle())
 					)
+				.append($('<ul>')
+					.addClass('list-group')
+					.attr('id', 'list-sel')
+					.hide()
 					.append(
-						$('<ul>')
-							.addClass('list-group')
-							.attr('id','list-sel')
-							.append(
-								$('<li>')
-									.addClass('list-group-item')
-									.append(
-										$('<a>').text('Nir')
-									)
-							)
-							.append(
-								$('<li>')
-									.addClass('list-group-item')
-									.append(
-										$('<a>').text('Tom')
-									)
-							)
-							.append(
-								$('<li>')
-									.addClass('list-group-item')
-									.append(
-										$('<a>').text('Avi')
-									)
-							)
-					))
-					
-		;
+					[
+						this.genFilterDropdown('seller', '', 'All'),
+						this.genFilterDropdown('seller', 'seller name'),
+					]
+				)))
 	}
 
 	genFilterDropdown(key, value, text) {
@@ -228,13 +219,14 @@ export class ShopRoute extends Route {
 		}, (_, index) => $('<a>')
 			.on('click', () => PageRouter.go(this, { ...this.params, page: index }))
 			.text(index + 1)
+			.addClass(() =>{ if(index==this.page){return 'cur-page'} else{return 'page'}})
 		);
 
 		if (this.page > 0) {
 			navButtons.unshift($('<a>')
 				.on('click', () => PageRouter.go(this, { ...this.params, page: this.page - 1 }))
 				.append($('<i>')
-					.addClass('bi bi-arrow-left')
+					.addClass('bi bi-arrow-left page')
 				)
 			);
 		}
@@ -243,7 +235,7 @@ export class ShopRoute extends Route {
 			navButtons.push($('<a>')
 				.on('click', () => PageRouter.go(this, { ...this.params, page: this.page + 1 }))
 				.append($('<i>')
-					.addClass('bi bi-arrow-right')
+					.addClass('bi bi-arrow-right page')
 				)
 			);
 		}

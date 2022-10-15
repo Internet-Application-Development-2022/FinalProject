@@ -334,14 +334,22 @@ footer .copyright {
    flex-wrap: wrap;
 }
 #filters-con .btn {
-   width: 120px;
+   width: auto;
+}
+#filter-text {
+   margin-right: 15px;
+   margin-top: 5px;
 }
 #filter {
    margin-right: 15px;
 }
 .list-group{
    margin-top: 10px;
-   width: 120px;
+   width: auto;
+}
+.list-group-item:hover{
+background-color: #088178;
+cursor: pointer;
 }
 
 #Shop-header {
@@ -351,24 +359,26 @@ footer .copyright {
    justify-content: center;
    align-items: center;
    text-align: center;
-   background-image: url("/public/img/banner/b1.jpg");
+   background-image: url("/public/img/banner/b4.jpg");
    width: 100%;
-   height: 40vh;
+   height: 30vh;
    background-size: cover;
    background-position: center;
 }
 
-#Shop-header h2,
+#Shop-header h2{
+   padding-bottom: 25px;
+   color: #fff;
+}
 #Shop-header h1 {
    color: #fff;
-   padding-bottom: 25px;
 }
 
 #page-nav {
    text-align: center;
 }
 
-#page-nav a {
+#page-nav .page {
    text-decoration: none;
    background-color: #088178;
    padding: 15px 20px;
@@ -377,6 +387,17 @@ footer .copyright {
    font-weight: 600;
    cursor: pointer;
    margin: 5px;
+}
+#page-nav .cur-page{
+   text-decoration: none;
+   background-color: #fff;
+   padding: 15px 20px;
+   border-radius: 4px;
+   color: #088178;
+   font-weight: 600;
+   cursor: pointer;
+   margin: 5px;
+   border: 1px solid #088178;
 }
 
 
