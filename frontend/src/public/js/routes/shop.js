@@ -51,12 +51,7 @@ export class ShopRoute extends Route {
 			)
 		
 		$(document).ready(function(){
-			$(".but-cat").click(function(){
-			  $('#list-cat').toggle();
-			});
-			$(".but-sel").click(function(){
-				$('#list-sel').toggle();
-			  });
+			
 		});
 			
 	}
@@ -87,6 +82,14 @@ export class ShopRoute extends Route {
 			}
 		);
 	}
+
+	filter(filt){
+		$( ".pro" ).each(function() {
+			if(this.catagory!=filt)
+			console.log(this);
+			$(this).hide();
+		  });
+	}
 	genProductfilter() {
 		return $('<section>')
 			.attr('id', 'filters-con')
@@ -98,16 +101,20 @@ export class ShopRoute extends Route {
 						$('<Button>').text('Catagory')
 							.addClass('btn btn-secondary dropdown-toggle but-cat')
 							.attr('id','filter')
+							.on('click',() => $('#list-cat').toggle())
+						
 					)
 					.append(
 						$('<ul>')
 							.addClass('list-group')
 							.attr('id','list-cat')
+							.hide()
 							.append(
 								$('<li>')
 									.addClass('list-group-item')
 									.append(
 										$('<a>').text('Shirts')
+										.on('click',this.filter('Shirts'))
 									)
 							)
 							.append(
@@ -115,6 +122,7 @@ export class ShopRoute extends Route {
 									.addClass('list-group-item')
 									.append(
 										$('<a>').text('Pants')
+										.on('click',this.filter('Pants'))
 									)
 							)
 							.append(
@@ -131,6 +139,7 @@ export class ShopRoute extends Route {
 						$('<Button>').text('Seller')
 							.addClass('btn btn-secondary dropdown-toggle but-sel')
 							.attr('id', 'filter')
+							.on('click',() => $('#list-sel').toggle())
 					)
 					.append(
 						$('<ul>')
