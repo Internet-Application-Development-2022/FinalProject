@@ -1,9 +1,11 @@
+console.log(`Starting up backend in ${process.env.PROD ? 'PRODUCTION' : 'DEVELOPMENT'} mode`);
+
 import dotenv from 'dotenv';
 dotenv.config();
 
+// connect to mongodb
 import { mongoose } from 'mongoose';
 import { DB_URL } from './config/db.config.js';
-// connect to mongodb
 mongoose
 	.connect(DB_URL, {
 		useNewUrlParser: true,
@@ -18,6 +20,7 @@ mongoose
 	});
 
 
+// create express app
 import express from 'express';
 const app = express();
 
@@ -25,15 +28,25 @@ const app = express();
 // parse requests of content-type - application/json
 app.use(express.json());
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+// create session
+import session from 'express-session';
+
+app.use(session({
+	secret: 'foo',
+	saveUninitialized: false,
+	resave: false
+}));
 
 
-// use router
+// use routers
 import apiRouter from './routes.js';
 app.use('/api', apiRouter);
 
+import loginRouter from './routes/login.js';
+app.use('login', loginRouter);
 
+
+// create socket.io server
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 
@@ -42,9 +55,9 @@ const io = new Server(httpServer);
 
 io.on('connection', soc => {
 	// something
-})
+});
 
-// set port, listen for requests
+// set port, run server
 const PORT = process.env.PORT || 8080;
 httpServer.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}.`);

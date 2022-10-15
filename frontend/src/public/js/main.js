@@ -1,12 +1,12 @@
 import $ from 'jquery';
-import { io } from "socket.io-client";
+import { io } from 'socket.io-client';
 
 import { PageRouter, HomePage, ShopPage } from './routes.js';
 
 const NAVIGATION_PAGES = [
 	HomePage,
 	ShopPage
-]
+];
 
 $(() => {
 	//const socket = io();
@@ -21,16 +21,16 @@ $(() => {
 			.on('click', () => PageRouter.go(route));
 
 		PageRouter.addSelectListener(selected => {
-			if (PageRouter.isSelected(route)) {
+			if (route === selected) {
 				button.addClass('active');
 			}
 			else {
 				button.removeClass('active');
 			}
-		})
+		});
 
 		$('#navbar').append(
 			$('<li>').append(button)
-		)
+		);
 	});
-})
+});

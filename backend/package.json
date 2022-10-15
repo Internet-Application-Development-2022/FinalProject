@@ -28,9 +28,9 @@
   },
   "homepage": "https://github.com/Internet-Application-Development-2022/FinalProject#readme",
   "dependencies": {
-    "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
+    "express-session": "^1.17.3",
     "mongoose": "^6.6.2",
     "socket.io": "^4.5.2"
   },

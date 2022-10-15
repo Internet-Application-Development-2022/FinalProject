@@ -6,7 +6,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 // static serve frontend
 app.use('/', express.static('src'));
@@ -24,7 +24,7 @@ app.use(createProxyMiddleware('ws://backend'));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 80;
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}.`);
 });
 

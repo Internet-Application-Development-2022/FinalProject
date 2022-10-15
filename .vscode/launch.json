@@ -9,7 +9,7 @@
 			"request": "attach",
 			"name": "Docker: Attach to Node",
 			"remoteRoot": "/work",
-			"localRoot": "${workspaceFolder}/backend",
+			"localRoot": "${workspaceFolder}/",
 			"restart": true
 		}
 	]

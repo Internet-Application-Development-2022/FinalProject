@@ -3,15 +3,17 @@ services:
   backend:
     container_name: finalproject-backend
     depends_on:
-      - mongodb
-    build: 
-      context: ./backend
+      - mongo
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
       target: debug
     env_file: ./.env
     ports:
+      - 8080:80
       - 9229:9229
     environment:
-      - DB_HOST=mongodb
+      - DB_HOST=mongo
       - DB_USER=$MONGODB_USER
       - DB_PASSWORD=$MONGODB_PASSWORD
       - DB_NAME=$MONGODB_DATABASE
@@ -21,8 +23,9 @@ services:
       - public
       - private
     volumes:
-      - ./backend:/work
-      - /work/node_modules
+      - ./backend:/work/backend
+      - ./shared:/work/shared
+      - /work/backend/node_modules
 
   frontend:
     container_name: finalproject-frontend
@@ -37,7 +40,7 @@ services:
       - ./frontend:/work
       - /work/node_modules
 
-  mongodb:
+  mongo:
     image: "mongo:6.0.2"
     env_file: ./.env
     environment:
@@ -50,15 +53,15 @@ services:
       - private
 
   mongo-express:
-    image: mongo-express
+    image: mongo-express:1.0.0-alpha.4
     depends_on:
-      - mongodb
+      - mongo
     ports:
       - 8081:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: $MONGODB_USER
       ME_CONFIG_MONGODB_ADMINPASSWORD: $MONGODB_PASSWORD
-      ME_CONFIG_MONGODB_URL: mongodb://$MONGODB_USER:$MONGODB_PASSWORD@mongodb:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://$MONGODB_USER:$MONGODB_PASSWORD@mongo:27017/
     networks:
       - private
 

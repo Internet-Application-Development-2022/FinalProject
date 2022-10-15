@@ -1,1 +1,2 @@
-export { Tutorial } from './models/tutorial.model.js';
+export { Tutorial } from './models/tutorial.js';
+export { Product } from './models/product.js';

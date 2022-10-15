@@ -1,7 +1,7 @@
 import $ from 'jquery';
-import { Router } from "./routes/router.js";
-import { HomeRoute } from "./routes/home.js";
-import { ShopRoute } from "./routes/shop.js";
+import { Router } from './routes/router.js';
+import { HomeRoute } from './routes/home.js';
+import { ShopRoute } from './routes/shop.js';
 import { ProductRoute } from './routes/product.js';
 
 

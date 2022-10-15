@@ -1,4 +1,4 @@
-import { Route } from "./router.js";
+import { Route } from './router.js';
 
 export class HomeRoute extends Route {
 	constructor() {
@@ -6,6 +6,6 @@ export class HomeRoute extends Route {
 	}
 
 	onSelect(content) {
-		
+
 	}
 }
