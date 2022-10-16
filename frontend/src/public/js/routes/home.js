@@ -46,7 +46,8 @@ export class HomeRoute extends Route {
 		return $('<section>')
 			.attr('id', 'products')
 			.addClass('section-p1')
-			.append()
+			.append($('<h2>').text('New Anrrivals'))
+			.append($('<p>').text('New Collection Desings'))
 			.append(
 				$('<div>')
 					.addClass('pro-container')
