@@ -1,12 +1,12 @@
-import * as loginService from '../services/login.js';
+import loginService from '../services/login.js';
 
 export default {
-	auth(req, res, next) {
+	isLoggedIn(req, res, next) {
 		if(req.session.username) {
 			next();
-			return;
+		} else {
+			res.redirect('/login');
 		}
-		res.redirect(req.baseUrl + '/login');
 	},
 	async register(req, res) {
 		const { username, password } = req.body;
@@ -14,10 +14,10 @@ export default {
 		try {
 			await loginService.register(username, password);
 			req.session.username = username;
-			res.redirect(req.baseUrl);
+			res.redirect('/admin');
 		}
 		catch (e) {
-			res.redirect(req.path + '?error=1');
+			res.redirect('/register?error=1');
 		}
 	},
 	async login(req, res) {
@@ -25,10 +25,10 @@ export default {
 
 		if (await loginService.login(username, password)) {
 			req.session.username = username;
-			res.redirect(req.baseUrl);
+			res.redirect('/admin');
 		}
 		else {
-			res.redirect(req.path + '?error=1');
+			res.redirect('/login?error=1');
 		}
 	},
 	logout(req, res) {
@@ -37,12 +37,20 @@ export default {
 		});
 	},
 	registerForm(req, res) {
-		res.render('register', {});
+		res.render('register', {
+			usernamePattern: loginService.USERNAME_PATTERN,
+			passwordPattern: loginService.PASSWORD_PATTERN,
+			error: !!req.query.error
+		});
 	},
 	loginForm(req, res) {
-		res.render('login', {});
+		res.render('login', {
+			usernamePattern: loginService.USERNAME_PATTERN,
+			passwordPattern: loginService.PASSWORD_PATTERN,
+			error: !!req.query.error
+		});
 	},
 	adminPage(req, res) {
-		res.render('admin', {});
+		res.render('admin', { username: req.session.username });
 	}
 };
