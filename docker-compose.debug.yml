@@ -5,12 +5,11 @@ services:
     depends_on:
       - mongo
     build:
-      context: .
-      dockerfile: ./backend/Dockerfile
+      context: ./app
       target: debug
     env_file: ./.env
     ports:
-      - 8080:80
+      - 80:80
       - 9229:9229
     environment:
       - DB_HOST=mongo
@@ -19,25 +18,8 @@ services:
       - DB_NAME=$MONGODB_DATABASE
       - DB_PORT=27017
       - NODE_ENV=development
-    networks:
-      - public
-      - private
     volumes:
-      - ./backend:/work/backend
-      - ./shared:/work/shared
-      - /work/backend/node_modules
-
-  frontend:
-    container_name: finalproject-frontend
-    build:
-      context: ./frontend
-      target: debug
-    ports:
-      - 80:80
-    networks:
-      - public
-    volumes:
-      - ./frontend:/work
+      - ./app:/work
       - /work/node_modules
 
   mongo:
@@ -49,8 +31,6 @@ services:
     volumes:
       - db:/data/db
       - configdb:/data/configdb
-    networks:
-      - private
 
   mongo-express:
     image: mongo-express:1.0.0-alpha.4
@@ -62,12 +42,7 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: $MONGODB_USER
       ME_CONFIG_MONGODB_ADMINPASSWORD: $MONGODB_PASSWORD
       ME_CONFIG_MONGODB_URL: mongodb://$MONGODB_USER:$MONGODB_PASSWORD@mongo:27017/
-    networks:
-      - private
 
-networks:
-  public:
-  private:
 volumes:
   db:
   configdb:
