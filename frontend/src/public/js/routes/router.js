@@ -87,12 +87,12 @@ export class Router {
 
 		console.log(`Router: Arrived at "${Router.#getRawCurrentRoute()}"`);
 
-		document.title = route.name;
-
 		if (route === undefined) {
 			this.go();
 			return;
 		}
+
+		document.title = route.name;
 
 		route.onSelect(this.content, params);
 
