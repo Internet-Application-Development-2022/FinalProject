@@ -7,10 +7,10 @@
 		{
 			"type": "node",
 			"request": "attach",
-			"name": "Docker: Attach to Node",
+			"name": "Docker: Attach to Backend",
 			"remoteRoot": "/work",
-			"localRoot": "${workspaceFolder}/",
+			"localRoot": "${workspaceFolder}/app",
 			"restart": true
-		}
+		},
 	]
 }

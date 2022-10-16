@@ -5,9 +5,10 @@ services:
     depends_on:
       - mongo
     build:
-      context: .
-      dockerfile: ./backend/Dockerfile
+      context: ./app
       target: prod
+    ports:
+      - 80:80
     env_file: ./.env
     environment:
       - DB_HOST=mongo
@@ -15,21 +16,6 @@ services:
       - DB_PASSWORD=$MONGODB_PASSWORD
       - DB_NAME=$MONGODB_DATABASE
       - DB_PORT=27017
-    networks:
-      - public
-      - private
-
-  frontend:
-    container_name: finalproject-frontend
-    depends_on:
-      - backend
-    build:
-      context: ./frontend
-      target: prod
-    ports:
-      - 80:80
-    networks:
-      - public
 
   mongo:
     image: "mongo:6.0.2"
@@ -40,12 +26,7 @@ services:
     volumes:
       - db:/data/db
       - configdb:/data/configdb
-    networks:
-      - private
 
-networks:
-  public:
-  private:
 volumes:
   db:
   configdb:

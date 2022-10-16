@@ -33,4 +33,4 @@ RUN npm install --include="dev"
 
 COPY . .
 
-ENTRYPOINT [ "npm", "run", "debug" ]
+ENTRYPOINT [ "npm", "run", "debuggable" ]

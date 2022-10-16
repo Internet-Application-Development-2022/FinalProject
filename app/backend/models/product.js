@@ -1,4 +1,4 @@
-import { Schema, mongoose } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { Product as ProductClass } from '../entities.js';
 
 const ProductSchema = Schema(
@@ -14,4 +14,4 @@ const ProductSchema = Schema(
 
 ProductSchema.loadClass(ProductClass);
 
-export const Product = mongoose.model('product', ProductSchema);
+export const Product = model('Product', ProductSchema);
