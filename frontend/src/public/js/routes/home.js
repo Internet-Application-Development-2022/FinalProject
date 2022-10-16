@@ -1,16 +1,22 @@
 import $ from 'jquery';
 import { Route } from './router.js';
-import { PageRouter, ProductPage } from '../routes.js';
+import { PageRouter, ProductPage, ShopPage} from '../routes.js';
 
 export class HomeRoute extends Route {
+	static PRODUCT_NUM = 8;
+	fetchedProducts;
 	
 	constructor() {
 		super('Home');
 	}
 
-	onSelect(content,params) {
-		
-		
+	get products(){
+		return this.fetchedProducts;
+	}
+
+	async onSelect(content,params) {
+
+		await this.fetchProducts();
 
 		$(content)
 		.append(
@@ -20,15 +26,27 @@ export class HomeRoute extends Route {
 			this.genFeatures()
 		)
 		.append(
+			this.genProductConteiner()
+		)
+		
+		.append(
 			this.genJoin()
 		)
 		;
 	}
-/*
+
+	async fetchProducts() {
+		if (this.fetchedProducts) {
+			return;
+		}
+		this.fetchedProducts = await (await fetch('/api/products?size='+HomeRoute.PRODUCT_NUM))?.json();
+	}
+
 	genProductConteiner() {
 		return $('<section>')
 			.attr('id', 'products')
 			.addClass('section-p1')
+			.append()
 			.append(
 				$('<div>')
 					.addClass('pro-container')
@@ -50,21 +68,23 @@ export class HomeRoute extends Route {
 					.append($('<h5>').text(product.name))
 					.append($('<div>')
 						.addClass('Seller')
-						.append($('<span>').text('sellser name'/*product.seller.name*//*))
+						.append($('<span>').text('sellser name'/*product.seller.name*/))
 					).append(
-						$('<h4>').text(`${product.price}${'$'/*product.currency.symbol*//*}`)
+						$('<h4>').text(`${product.price}${'$'/*product.currency.symbol*/}`)
 					)
 			).append($('<a>').append(
 				$('<i>').addClass('bi bi-cart cart')
 			));
-	}*/
+	}
 	genHero(){
 		return $('<section>')
 			.attr('id', 'hero')
 			.append($('<h4>').text('Welcome to our Store'))
 			.append($('<h2>').text('Super value deals'))
 			.append($('<h2>').text('On all products'))
-			.append($('<button>').text('Shop Now!'))
+			.append($('<button>')
+				.text('Shop Now!')
+				.on('click',()=>PageRouter.go(ShopPage)))
 	}
 	genFeatures(){
 		return $('<section>')
