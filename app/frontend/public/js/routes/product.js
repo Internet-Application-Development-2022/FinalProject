@@ -37,36 +37,7 @@ export class ProductRoute extends Route {
 					.attr('src', this.product.img)
 					.attr('alt', this.product.alt)
 				)
-				/*.append($('<div>')
-					.addClass('small-img-g')
-					.append($('<div>')
-						.addClass('small-img-col')
-						.append($('<img>')
-							.attr('src', this.product.img)
-							.attr('alt', this.product.alt)
-						)
-					)
-					.append($('<div>')
-						.addClass('small-img-col')
-						.append($('<img>')
-							.attr('src', this.product.img)
-							.attr('alt', this.product.alt)
-						)
-					)
-					.append($('<div>')
-						.addClass('small-img-col')
-						.append($('<img>')
-							.attr('src', this.product.img)
-							.attr('alt', this.product.alt)
-						)
-					)
-					.append($('<div>')
-						.addClass('small-img-col')
-						.append($('<img>')
-							.attr('src', this.product.img)
-							.attr('alt', this.product.alt)
-						)
-					))*/)
+			)
 
 
 			.append($('<div>')
@@ -92,49 +63,5 @@ export class ProductRoute extends Route {
 			)
 	}
 }
-/*
-<section id="product-details" class="section-p1">
-		<div class="pro-big-pic">
-			<img src="/public/img/products/f1.jpg" alt="Product" class="big">
 
-			<div class="small-img-g">
-				<div class="small-img-col">
-					<img class="small-img" src="/public/img/products/f1.jpg" alt="small-img">
-				</div>
-				<div class="small-img-col">
-					<img class="small-img" src="/public/img/products/f1.jpg" alt="small-img">
-				</div>
-				<div class="small-img-col">
-					<img class="small-img" src="/public/img/products/f1.jpg" alt="small-img">
-				</div>
-				<div class="small-img-col">
-					<img class="small-img" src="/public/img/products/f1.jpg" alt="small-img">
-				</div>
-			</div>
-		</div>
-		<div class="text-details">
-			<h6>Home / T-Shirt</h6>
-			<h4>Men's Fashion T-Shirt</h4>
-			<h2>78$</h2>
-			<select class="form-select">
-				<option>Select Size</option>
-				<option>S</option>
-				<option>M</option>
-				<option>L</option>
-				<option>XL</option>
-				<option>XXL</option>
-			</select>
-			<input type="number" value="1">
-			<button class="btn btn-success">Add To Cart</button>
-			<h4>Product Details</h4>
-			<span>
-				100% cotton
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-				sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-				Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-				Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-				laborum.
-			</span>
-		</div>
-	</section>*/
+

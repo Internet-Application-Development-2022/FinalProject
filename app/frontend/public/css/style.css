@@ -533,3 +533,100 @@ cursor: pointer;
    align-self: center;
 
 }
+.twi-container {
+   display: flex;
+   justify-content: space-between;
+   padding-top: 20px;
+   flex-wrap: wrap;
+}
+.quote_frame{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   text-align: center;
+   background-image: url("/public/img/about/twitter.png");
+   width: 30%;
+   height: 40vh;
+   background-size: cover;
+   background-position: center;
+ }
+ .quote_frame h2{
+   font-size: 14px;
+   color: #088178;
+ } 
+ .quote_frame h4{
+   font-size: 12px;
+ } 
+
+ #twiters {
+   text-align: center;
+}
+
+#twiters .twi-container {
+   display: flex;
+   justify-content: space-between;
+   padding-top: 20px;
+   flex-wrap: wrap;
+}
+
+#twiters .twi {
+   width: 23%;
+   height: auto;
+   min-width: 250px;
+   padding: 10px 12px;
+   border: 1px solid #cce7d0;
+   border-radius: 25px;
+   cursor: pointer;
+   box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.02);
+   margin: 15px 0;
+   transition: 0.2s ease;
+   position: relative;
+}
+
+#twiters .twi:hover {
+   box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.2);
+}
+
+#twiters .twi img {
+   width: 15%;
+   border-radius: 40px;
+}
+
+#twiters .twi .des {
+   text-align: start;
+   padding: 10px 0;
+   height: 300px;
+}
+
+#twiters .twi .des span {
+   color: #606063;
+   font-size: 12px;
+   
+}
+
+#twiters .twi .des h5 {
+   padding-top: 7px;
+   color: #1a1a1a;
+   font-size: 14px;
+}
+
+#twiters .twi .des h4 {
+   padding-top: 7px;
+   color: #088178;
+   font-size: 15px;
+   font-weight: 700;
+}
+
+#twiters .twi .twit {
+   width: 40px;
+   height: 40px;
+   line-height: 40px;
+   border-radius: 50px;
+   background-color: #b7c7f6;
+   font-weight: 500;
+   color: #5c50c8;
+   border: 1px solid #cce7d0;
+   position: absolute;
+   bottom: 20px;
+   right: 10px;
+}
