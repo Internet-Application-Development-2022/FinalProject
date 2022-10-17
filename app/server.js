@@ -3,9 +3,15 @@ console.log(`Starting up backend in ${process.env.PROD ? 'PRODUCTION' : 'DEVELOP
 import dotenv from 'dotenv';
 dotenv.config();
 
+import {fileURLToPath} from 'url';
+import path from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // connect to mongodb
 import { mongoose } from 'mongoose';
-import { DB_URL } from './config/db.config.js';
+import { DB_URL } from './backend/config/db.config.js';
 mongoose
 	.connect(DB_URL, {
 		useNewUrlParser: true,
@@ -25,8 +31,11 @@ import express from 'express';
 const app = express();
 
 
-// parse requests of content-type - application/json
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.set('views', './backend/views');
+app.set('view engine', 'ejs');
 
 // create session
 import session from 'express-session';
@@ -37,14 +46,26 @@ app.use(session({
 	resave: false
 }));
 
-
 // use routers
-import apiRouter from './routes.js';
+import loginRouter from './backend/routes/login.js';
+app.use('/', loginRouter);
+
+import apiRouter from './backend/routes.js';
 app.use('/api', apiRouter);
 
-import loginRouter from './routes/login.js';
-app.use('login', loginRouter);
+// static serve frontend
+app.get('/',
+	(req, res) => res.sendFile(
+		path.join( __dirname, 'frontend', 'index.html')
+	)
+);
 
+app.use('/public', express.static('frontend/public'));
+
+if (!process.env.PROD) {
+	console.log('Loading JS map files');
+	app.use('/public/source/', express.static('frontend/source'));
+}
 
 // create socket.io server
 import { createServer } from 'http';

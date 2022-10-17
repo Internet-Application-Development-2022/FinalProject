@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link href="/public/CDN/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet"
+      integrity="sha384-xeJqLiuOvjUBq3iGOjvSQSIlwrpqjSHXpduPd6rQpuiM3f5/ijby8pCsnbu5S81n" />
+    <link href="/public/CDN/bootstrap@5.2.2/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-wpMrDdCyrWWMh7jp301ZVf5iM1FHIfHA6cmCdcayg7zBZm0KfYJt8GBunp2YMK7p" />
+  </head>
+  <body>
+    <% if(error) { %>
+    <h4>Error logging in</h4>
+    <p>there might be a problem with your username or password</p>
+    <p>if you don't have a user, register at the link below</p>
+    <% } %>
+    <form action="/login" method="post">
+        <input required pattern="<%= usernamePattern %>" name="username">
+        <input required pattern="<%= passwordPattern %>" name="password" type="password">
+        <input type="submit">
+    </form>
+    <a href="/register">Register</a>
+  </body>
+</html>

@@ -19,10 +19,10 @@ export class Router {
 
 	selectListners = [];
 
-	static #parseRoute(routeString) {
+	#parseRoute(routeString) {
 		let [route, params] = routeString.split('?', 2);
 		return {
-			route,
+			route: this.getRouteFromName(route),
 			params: Object.fromEntries(new URLSearchParams(params))
 		};
 	}
@@ -31,8 +31,8 @@ export class Router {
 		return window.location.hash.substring(1);
 	}
 
-	static getCurrentRoute() {
-		return Router.#parseRoute(
+	getCurrentRoute() {
+		return this.#parseRoute(
 			Router.#getRawCurrentRoute()
 		);
 	}
@@ -83,21 +83,20 @@ export class Router {
 			this.content.removeChild(this.content.firstChild);
 		}
 
-		let { route, params } = Router.getCurrentRoute();
+		let { route, params } = this.getCurrentRoute();
 
 		console.log(`Router: Arrived at "${Router.#getRawCurrentRoute()}"`);
 
-		document.title = route;
-		let page = this.getRouteFromName(route);
-
-		if (page === undefined) {
+		if (route === undefined) {
 			this.go();
 			return;
 		}
 
-		page.onSelect(this.content, params);
+		document.title = route.name;
 
-		this.#callListeners(page);
+		route.onSelect(this.content, params);
+
+		this.#callListeners(route);
 	}
 
 	go(route, params) {
@@ -126,7 +125,7 @@ export class Router {
 	}
 
 	isSelected(route) {
-		return Router.getRouteName(route) === Router.getCurrentRoute().route;
+		return this.getRouteFromName(route) === this.getCurrentRoute().route;
 	}
 
 	getRouteFromName(route) {
@@ -136,7 +135,7 @@ export class Router {
 	}
 
 	addSelectListener(listener) {
-		this.#callListener(listener, this.defaultRoute);
+		this.#callListener(listener, this.getCurrentRoute().route);
 		this.selectListners.push(listener);
 	}
 
