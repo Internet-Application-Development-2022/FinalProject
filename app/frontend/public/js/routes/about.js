@@ -3,21 +3,21 @@ import { Route } from './router.js';
 import { PageRouter, ProductPage, ShopPage} from '../routes.js';
 
 export class AboutRoute extends Route {
-    fetchedTweets;
+    fetchedTwitts;
     constructor() {
 		super('AboutUs');
 	}
 
-    get tweets() {
-		return this.fetchedTweets.data.map(elem => {
-            elem.user = this.fetchedTweets.includes.users.find(user => user.id === elem.author_id);
+    get twitts() {
+		return this.fetchedTwitts.data.map(elem => {
+            elem.user = this.fetchedTwitts.includes.users.find(user => user.id === elem.author_id);
             return elem;
         });
 	}
 
     async onSelect(content,params) {
 
-        await this.fetchTweets();
+        await this.fetchTwitts();
 
 
         $(content)
@@ -34,13 +34,16 @@ export class AboutRoute extends Route {
             this.genSelllersMaps()
         )
         .append(
+            this.genSocialHeader()
+        )
+        .append(
             this.genTwiConteiner()
         )
-
+        
     }
 
-    async fetchTweets() {
-		this.fetchedTweets = {
+    async fetchTwitts() {
+		this.fetchedTwitts = {
             "data": [
                 {
                     "author_id": "2495815027",
@@ -244,7 +247,7 @@ export class AboutRoute extends Route {
                     .addClass('gmap_canvas')
                     .append($('<iframe>')
                         .attr('id','gmap_canvas')
-                        .attr('src','https://maps.google.com/maps?q=&output=embed')
+                        .attr('src','https://maps.google.com/maps?q='+'51.70324,10.970150'+'&t=&z=13&ie=UTF8&iwloc=&output=embed')
                         .attr('width','547')
                         .attr('height','500')
                         .attr('frameborder','0')
@@ -261,19 +264,18 @@ export class AboutRoute extends Route {
             )
     }
 
-    genTweerts(){
-        return $('<section>')
-            .addClass('twi-container')
-            .append(this.tweets.map(p => this.genTweetText(p)))
 
-    }
-
-    genTweetText(tweet)
+    genSocialHeader() {
+		return $('<section>')
+			.attr('id', 'social-header')
+			.append($('<h1>').text('Read About Us'))
+	}
+    genTweetText(twitt)
     {
         return $('<div>')
             .addClass('quote_frame')
-            .append($('<h2>').text(tweet.user.name))
-            .append($('<div>').append($('<h4>').text(tweet.text)))
+            .append($('<h2>').text(twitt.user.name))
+            .append($('<div>').append($('<h4>').text(twitt.text)))
             
     }
     genTwiConteiner() {
@@ -283,23 +285,23 @@ export class AboutRoute extends Route {
 			.append(
 				$('<div>')
 					.addClass('twi-container')
-					.append(this.tweets.map(p => this.genTwiElement(p)))
+					.append(this.twitts.map(p => this.genTwiElement(p)))
 			);
 	}
 
-	genTwiElement(tweet) {
+	genTwiElement(twitt) {
 		return $('<div>')
 			.addClass('twi')
 			.append(
 				$('<img>')
-					.attr('src', tweet.user.profile_image_url)
+					.attr('src', twitt.user.profile_image_url)
 					.attr('alt','')
 			)
             .append(
 				$('<div>')
 					.addClass('des')
-					.append($('<span>').text(tweet.user.name))
-					.append($('<h5>').text(tweet.text))
+					.append($('<span>').text(twitt.user.name))
+					.append($('<h5>').text(twitt.text))
 			).append($('<a>').append(
 				$('<i>').addClass('bi bi-twitter twit')
 			));
