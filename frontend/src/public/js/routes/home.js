@@ -1,45 +1,45 @@
 import $ from 'jquery';
 import { Route } from './router.js';
-import { PageRouter, ProductPage, ShopPage} from '../routes.js';
+import { PageRouter, ProductPage, ShopPage } from '../routes.js';
 
 export class HomeRoute extends Route {
 	static PRODUCT_NUM = 8;
 	fetchedProducts;
-	
+
 	constructor() {
 		super('Home');
 	}
 
-	get products(){
+	get products() {
 		return this.fetchedProducts;
 	}
 
-	async onSelect(content,params) {
+	async onSelect(content, params) {
 
 		await this.fetchProducts();
 
 		$(content)
-		.append(
-			this.genHero()
-		)
-		.append(
-			this.genFeatures()
-		)
-		.append(
-			this.genProductConteiner()
-		)
-		
-		.append(
-			this.genJoin()
-		)
-		;
+			.append(
+				this.genHero()
+			)
+			.append(
+				this.genFeatures()
+			)
+			.append(
+				this.genProductConteiner()
+			)
+
+			.append(
+				this.genJoin()
+			)
+			;
 	}
 
 	async fetchProducts() {
 		if (this.fetchedProducts) {
 			return;
 		}
-		this.fetchedProducts = await (await fetch('/api/products?size='+HomeRoute.PRODUCT_NUM))?.json();
+		this.fetchedProducts = await (await fetch('/api/products?size=' + HomeRoute.PRODUCT_NUM))?.json();
 	}
 
 	genProductConteiner() {
@@ -47,13 +47,14 @@ export class HomeRoute extends Route {
 			.attr('id', 'products')
 			.addClass('section-p1')
 			.append($('<h2>').text('New Anrrivals'))
-			.append($('<p>').text('New Collection Desings'))
-			.append(
-				$('<div>')
-					.addClass('pro-container')
-					.append(this.products.map(p => this.genProductElement(p)))
-			);
+				.append($('<p>').text('New Collection Desings'))
+					.append(
+						$('<div>')
+							.addClass('pro-container')
+							.append(this.products.map(p => this.genProductElement(p)))
+					)
 	}
+
 	genProductElement(product) {
 		return $('<div>')
 			.addClass('pro')
@@ -77,7 +78,8 @@ export class HomeRoute extends Route {
 				$('<i>').addClass('bi bi-cart cart')
 			));
 	}
-	genHero(){
+
+	genHero() {
 		return $('<section>')
 			.attr('id', 'hero')
 			.append($('<h4>').text('Welcome to our Store'))
@@ -85,51 +87,53 @@ export class HomeRoute extends Route {
 			.append($('<h2>').text('On all products'))
 			.append($('<button>')
 				.text('Shop Now!')
-				.on('click',()=>PageRouter.go(ShopPage)))
+				.on('click', () => PageRouter.go(ShopPage)))
 	}
-	genFeatures(){
+
+	genFeatures() {
 		return $('<section>')
-				.attr('id', 'feature')
-				.addClass('section-p1')
-				.append($('<div>')
-					.addClass('fe-box')
-					.append($('<img>').attr('src', '/public/img/features/f1.png').attr('alt',''))
-					.append($('<h6>').text('Worldwide Shipping'))
-				)
-				.append($('<div>')
-					.addClass('fe-box')
-					.append($('<img>').attr('src', '/public/img/features/f2.png').attr('alt',''))
-					.append($('<h6>').text('Fast Shipping'))
-				)
-				.append($('<div>')
-					.addClass('fe-box')
-					.append($('<img>').attr('src', '/public/img/features/f3.png').attr('alt',''))
-					.append($('<h6>').text('Save money'))
-				)
-				.append($('<div>')
-					.addClass('fe-box')
-					.append($('<img>').attr('src', '/public/img/features/f4.png').attr('alt',''))
-					.append($('<h6>').text('Spacial coupons'))
-				)
-				.append($('<div>')
-					.addClass('fe-box')
-					.append($('<img>').attr('src', '/public/img/features/f5.png').attr('alt',''))
-					.append($('<h6>').text('Great reviews'))
-				)
-				.append($('<div>')
-					.addClass('fe-box')
-					.append($('<img>').attr('src', '/public/img/features/f6.png').attr('alt',''))
-					.append($('<h6>').text('24/7 Support'))
-				)
+			.attr('id', 'feature')
+			.addClass('section-p1')
+			.append($('<div>')
+				.addClass('fe-box')
+				.append($('<img>').attr('src', '/public/img/features/f1.png').attr('alt', ''))
+				.append($('<h6>').text('Worldwide Shipping'))
+			)
+			.append($('<div>')
+				.addClass('fe-box')
+				.append($('<img>').attr('src', '/public/img/features/f2.png').attr('alt', ''))
+				.append($('<h6>').text('Fast Shipping'))
+			)
+			.append($('<div>')
+				.addClass('fe-box')
+				.append($('<img>').attr('src', '/public/img/features/f3.png').attr('alt', ''))
+				.append($('<h6>').text('Save money'))
+			)
+			.append($('<div>')
+				.addClass('fe-box')
+				.append($('<img>').attr('src', '/public/img/features/f4.png').attr('alt', ''))
+				.append($('<h6>').text('Spacial coupons'))
+			)
+			.append($('<div>')
+				.addClass('fe-box')
+				.append($('<img>').attr('src', '/public/img/features/f5.png').attr('alt', ''))
+				.append($('<h6>').text('Great reviews'))
+			)
+			.append($('<div>')
+				.addClass('fe-box')
+				.append($('<img>').attr('src', '/public/img/features/f6.png').attr('alt', ''))
+				.append($('<h6>').text('24/7 Support'))
+			)
 
 	}
-	genJoin(){
+
+	genJoin() {
 		return $('<section>')
 			.attr('id', 'join')
 			.addClass('section-m1')
 			.append($('<h4>').text('Designer?'))
 			.append($('<h2>').text('Join our designers and sell your designs HERE'))
 			.append($('<button>').addClass('btn btn-light').text('Join us'))
-		
+
 	}
 }
