@@ -18,33 +18,38 @@ export class AboutRoute extends Route {
 
 	async onSelect(content, params) {
 
-		await this.fetchTwitts();
-
-
-		$(content)
-			.append(
-				this.genAboutHeader()
-			)
-			.append(
-				this.genDetails()
-			)
-			.append(
-				this.genVideo()
-			)
-			.append(
-				this.genSelllersMaps()
-			)
-			.append(
-				this.genSocialHeader()
-			)
-			.append(
-				this.genTwiConteiner()
-			);
+		this.fetchTwitts(
+			$(content)
+				.append(
+					this.genAboutHeader()
+				)
+				.append(
+					this.genDetails()
+				)
+				.append(
+					this.genVideo()
+				)
+				.append(
+					this.genSelllersMaps()
+				)
+		);
         
 	}
 
-	async fetchTwitts() {
-		this.fetchedTwitts = await (await fetch('/api/twitter')).json();
+	async fetchTwitts(element) {
+		fetch('/api/twitter')
+			.then(response => response.json())
+			.then(data => {
+				this.fetchedTwitts = data;
+				
+				element
+					.append(
+						this.genSocialHeader()
+					)
+					.append(
+						this.genTwiConteiner()
+					);
+			});
 	}
 
 	genAboutHeader() {
@@ -130,8 +135,8 @@ export class AboutRoute extends Route {
 			.addClass('quote_frame')
 			.append($('<h2>').text(twitt.user.name))
 			.append($('<div>').append($('<h4>').text(twitt.text)));
-            
 	}
+
 	genTwiConteiner() {
 		return $('<section>')
 			.attr('id', 'twiters')
