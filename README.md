@@ -32,7 +32,7 @@
   * username and password login
   * extensive editing and search abilities
 * Handle eadge cases, input validation in both server and client side
-* Each View should use JQuery (we won't use it, but will use new JS goodness)
+* Each View should use JQuery
 * Support HTML5 abillities
   * Video
   * Canvas
