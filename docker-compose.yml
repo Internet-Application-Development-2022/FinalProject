@@ -7,9 +7,9 @@ services:
     build:
       context: ./app
       target: prod
+    env_file: ./.env
     ports:
       - 80:80
-    env_file: ./.env
     environment:
       - TWITTER_BEARER_TOKEN=$TWITTER_BEARER_TOKEN
       - DB_HOST=mongo
