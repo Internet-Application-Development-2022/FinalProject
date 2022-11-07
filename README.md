@@ -11,6 +11,7 @@
   * map
   * api - twitter #amazon usage
   * video
+* new seller form
   * canvas - base64 signature image
 * shop page
   * filter
