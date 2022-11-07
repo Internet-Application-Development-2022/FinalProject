@@ -1,15 +1,16 @@
-import { Seller } from '../models.js';
+import { SellerRequest } from '../models.js';
 import { parseID, strToNumber } from '../utils.js';
 
 const BAD_VALUES = [
 	'name',
 	'signature',
 	'email',
-	'phone'
+	'phone',
+	'text'
 ];
 
-function parseRequestParams(body, badValues) {
-	badValues.filter(key => !(
+function parseRequestParams(body) {
+	const badValues = BAD_VALUES.filter(key => !(
 		key in body && (
 			typeof body[key] === 'string' ||
 			body[key] instanceof String
@@ -29,29 +30,33 @@ function parseRequestParams(body, badValues) {
 		return false;
 	}
 
-	return {
-		name: body.name,
-		signature: body.signature,
-		email: body.email,
-		phone: body.phone,
-		location: {
-			type: 'Point',
-			coordinates: body.location
-		}
-	};
+	return [
+		{
+			name: body.name,
+			signature: body.signature,
+			email: body.email,
+			phone: body.phone,
+			location: {
+				type: 'Point',
+				coordinates: body.location
+			},
+			text: body.text,
+			status: 'Pending'
+		},
+		badValues
+	];
 }
 
 export default {
 	create(req, res) {
-		const badValues = [...BAD_VALUES];
-		const parsedRequestParams = parseRequestParams(req.body, badValues);
+		const [parsedRequestParams, badValues] = parseRequestParams(req.body);
 
 		if(!parsedRequestParams) {
 			res.status(400).send({ message: 'bad values for keys: ' + badValues.join(', ') });
 			return;
 		}
 
-		const seller = new Seller(parsedRequestParams);
+		const seller = new SellerRequest(parsedRequestParams);
 
 		seller
 			.save()
@@ -61,38 +66,45 @@ export default {
 			.catch(err => {
 				res.status(500).send({
 					message:
-						err.message || 'Some error occurred while creating the Seller.'
+						err.message || 'Some error occurred while creating the SellerRequest.'
 				});
 			});
 	},
 	findAll(req, res) {
 		const minDateAdded = 'minDateAdded' in req.query ? strToNumber(req.query.minDateAdded) : null;
 		const maxDateAdded = 'maxDateAdded' in req.query ? strToNumber(req.query.maxDateAdded) : null;
-		
+		const status = 'status' in req.query ? req.query.status : null;
+
 		const query = {};
 
-		if(minDateAdded !== null || maxDateAdded !== null) {
+		if(minDateAdded || maxDateAdded) {
 			query.createdAt = {};
 		}
 
-		if(minDateAdded !== null) {
+		if(minDateAdded) {
 			query.createdAt.$gte = new Date(minDateAdded);
 		}
 
-		if(maxDateAdded !== null) {
+		if(maxDateAdded) {
 			query.createdAt.$lte = new Date(maxDateAdded);
 		}
 
-		Seller
+		if(status) {
+			query.status = {
+				$eq: encodeURI(status)
+			};
+		}
+
+		SellerRequest
 			.find(query)
 			.then(sellers => {
 				if(sellers !== null) {
 					res.send(sellers);
 				} else {
-					res.status(400).send({ message: 'No sellers found' });
+					res.status(400).send({ message: 'No seller Requests found' });
 				}
 			})
-			.catch(err => res.status(500).send({ message: err || 'error finding sellers' }));
+			.catch(err => res.status(500).send({ message: err || 'error finding seller requests' }));
 	},
 	findOne(req, res) {
 		const id = parseID(req.params);
@@ -104,16 +116,16 @@ export default {
 			return;
 		}
 
-		Seller
+		SellerRequest
 			.findById(id)
 			.then(sellers => {
 				if(sellers !== null) {
 					res.send(sellers);
 				} else {
-					res.status(400).send({ message: 'No sellers found' });
+					res.status(400).send({ message: 'No seller request found' });
 				}
 			})
-			.catch(err => res.status(500).send({ message: err || 'error finding seller' }));
+			.catch(err => res.status(500).send({ message: err || 'error finding seller request' }));
 	},
 	update(req, res) {
 		const id = parseID(req.params);
@@ -133,7 +145,9 @@ export default {
 			location: {
 				type: 'Point',
 				coordinates: req.body.location
-			}
+			},
+			text: req.body.text,
+			status: req.body.status
 		};
 
 		for(let key in parsedRequestParams) {
@@ -146,20 +160,20 @@ export default {
 			delete parsedRequestParams['location'];
 		}
 
-		Seller.
+		SellerRequest.
 			findByIdAndUpdate(id, parsedRequestParams)
 			.then(data => {
 				if (!data) {
 					res.status(404).send({
-						message: 'Cannot update Seller with id=' + id
+						message: 'Cannot update Seller Request with id=' + id
 					});
 					return;
 				}
-				res.send({ message: 'Seller was updated successfully.' });
+				res.send({ message: 'Seller Request was updated successfully.' });
 			})
 			.catch(err => {
 				res.status(500).send({
-					message: 'Error updating Seller with id=' + id
+					message: 'Error updating Seller Request with id=' + id
 				});
 				console.log(err);
 			});
@@ -174,40 +188,57 @@ export default {
 			return;
 		}
 
-		Seller
+		SellerRequest
 			.findByIdAndRemove(id)
 			.then(data => {
 				if (!data) {
 					res.status(404).send({
-						message: 'Cannot delete seller with id=' + id
+						message: 'Cannot delete seller request with id=' + id
 					});
 					return;
 				}
 
 				res.send({
-					message: 'seller was deleted successfully!'
+					message: 'seller request was deleted successfully!'
 				});
 			})
 			.catch(err => {
 				res.status(500).send({
-					message: 'Could not delete seller with id=' + id
+					message: 'Could not delete seller request with id=' + id
 				});
 				console.log(err);
 			});
 	},
 	deleteAll(req, res) {
-		Seller
+		SellerRequest
 			.deleteMany()
 			.then(data => {
 				res.send({
-					message: `${data.deletedCount} sellers were deleted successfully!`
+					message: `${data.deletedCount} seller request were deleted successfully!`
 				});
 			})
 			.catch(err => {
 				res.status(500).send({
 					message:
-						err.message || 'an error occurred while removing all sellers.'
+						err.message || 'an error occurred while removing all seller requests.'
 				});
 			});
 	},
+	status(req, res) {
+		SellerRequest
+			.aggregate([
+				{
+					$group: { _id: '$status', quantity: {$sum: 1} }
+				}
+			])
+			.then(data => {
+				if (!data) {
+					res.status(404).send({
+						message: 'Cannot find seller request statuses'
+					});
+					return;
+				}
+				res.send(data);
+			});
+	}
 };
