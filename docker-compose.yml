@@ -11,6 +11,7 @@ services:
       - 80:80
     env_file: ./.env
     environment:
+      - TWITTER_BEARER_TOKEN=$TWITTER_BEARER_TOKEN
       - DB_HOST=mongo
       - DB_USER=$MONGODB_USER
       - DB_PASSWORD=$MONGODB_PASSWORD

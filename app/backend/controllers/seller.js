@@ -68,7 +68,7 @@ export default {
 	findAll(req, res) {
 		const minDateAdded = 'minDateAdded' in req.query ? strToNumber(req.query.minDateAdded) : null;
 		const maxDateAdded = 'maxDateAdded' in req.query ? strToNumber(req.query.maxDateAdded) : null;
-		
+
 		const query = {};
 
 		if(minDateAdded !== null || maxDateAdded !== null) {
