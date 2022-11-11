@@ -242,6 +242,22 @@ body {
    right: 10px;
 }
 
+#sig-canvas {
+   border: 2px dotted #CCCCCC;
+   border-radius: 15px;
+   width: 175px;
+   height: 75px;
+   cursor: crosshair;
+ }
+
+#register {
+   text-align: center;
+}
+
+#register form>div {
+   padding: 5px;
+}
+
 #join {
    display: flex;
    flex-direction: column;
