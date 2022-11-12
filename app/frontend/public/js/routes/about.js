@@ -50,25 +50,24 @@ export class AboutRoute extends Route {
 	}
 
 	async fetchContent(element) {
-		const instance = this;
 		Promise.all([ 
 			fetch('/api/twitter')
 				.then(response => response.json()),
 			fetch('/api/sellers')
 				.then(response => response.json())
-		]).then(function([twitterData,sellersData]){
-			instance.fetchedTwitts = twitterData;
-			instance.fetchedSellers = sellersData;
+		]).then(([twitterData, sellersData]) => {
+			this.fetchedTwitts = twitterData;
+			this.fetchedSellers = sellersData;
 
 			element
 				.append(
-					instance.genSelllersMaps()
+					this.genSelllersMaps()
 				)
 				.append(
-					instance.genSocialHeader()
+					this.genSocialHeader()
 				)
 				.append(
-					instance.genTwiConteiner()
+					this.genTwiConteiner()
 				)
 			;
 		});
