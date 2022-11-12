@@ -8,8 +8,8 @@ const BAD_VALUES = [
 	'phone'
 ];
 
-function parseRequestParams(body, badValues) {
-	badValues.filter(key => !(
+function parseRequestParams(body) {
+	const badValues = BAD_VALUES.filter(key => !(
 		key in body && (
 			typeof body[key] === 'string' ||
 			body[key] instanceof String
@@ -29,22 +29,24 @@ function parseRequestParams(body, badValues) {
 		return false;
 	}
 
-	return {
-		name: body.name,
-		signature: body.signature,
-		email: body.email,
-		phone: body.phone,
-		location: {
-			type: 'Point',
-			coordinates: body.location
-		}
-	};
+	return [
+		{
+			name: body.name,
+			signature: body.signature,
+			email: body.email,
+			phone: body.phone,
+			location: {
+				type: 'Point',
+				coordinates: body.location
+			}
+		},
+		badValues
+	];
 }
 
 export default {
 	create(req, res) {
-		const badValues = [...BAD_VALUES];
-		const parsedRequestParams = parseRequestParams(req.body, badValues);
+		const [parsedRequestParams, badValues] = parseRequestParams(req.body);
 
 		if(!parsedRequestParams) {
 			res.status(400).send({ message: 'bad values for keys: ' + badValues.join(', ') });
