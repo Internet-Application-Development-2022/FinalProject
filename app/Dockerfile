@@ -4,8 +4,8 @@ ENV PROD=1
 
 WORKDIR /work
 
-# default to port 80 for node
-ARG PORT=80
+# default to port 8080 for node
+ARG PORT=8080
 ENV PORT $PORT
 
 COPY package.json .
@@ -24,7 +24,7 @@ ENV PROD=
 WORKDIR /work
 
 # default to port 80 for node
-ARG PORT=80
+ARG PORT=8080
 ENV PORT $PORT
 
 COPY package.json .

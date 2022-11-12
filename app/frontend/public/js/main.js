@@ -1,11 +1,12 @@
 import $ from 'jquery';
 import { io } from 'socket.io-client';
 
-import { PageRouter, HomePage, ShopPage } from './routes.js';
+import { PageRouter, HomePage, ShopPage, AboutPage } from './routes.js';
 
 const NAVIGATION_PAGES = [
 	HomePage,
-	ShopPage
+	ShopPage,
+	AboutPage
 ];
 
 $(() => {
@@ -21,7 +22,7 @@ $(() => {
 			.on('click', () => PageRouter.go(route));
 
 		PageRouter.addSelectListener(selected => {
-			if (route === selected) {
+			if (PageRouter.isSelected(route)) {
 				button.addClass('active');
 			}
 			else {

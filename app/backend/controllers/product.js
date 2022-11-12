@@ -1,12 +1,10 @@
 import { Product } from '../models.js';
-
-function strToNumber(str) {
-	return !isNaN(str) ? parseInt(str, 10) : NaN;
-}
+import { strToNumber, parseID } from '../utils.js';
 
 export default {
 	create(req, res) {
 		const parsedRequestBody = {
+			seller: req.body.seller,
 			name: req.body.name,
 			price: req.body.price,
 			catagory: req.body.catagory,
@@ -28,14 +26,14 @@ export default {
 		const product = new Product(parsedRequestBody);
 
 		product
-			.save(product)
+			.save()
 			.then(data => {
 				res.send(data);
 			})
 			.catch(err => {
 				res.status(500).send({
 					message:
-						err.message || 'Some error occurred while creating the Tutorial.'
+						err.message || 'Some error occurred while creating the Product.'
 				});
 			});
 	},
@@ -68,21 +66,28 @@ export default {
 			.catch(err => {
 				res.status(500).send({
 					message:
-						err.message || 'Some error occurred while retrieving tutorials.'
+						err.message || 'Some error occurred while retrieving Products.'
 				});
 			});
 	},
 	findOne(req, res) {
-		if (!('id' in req.params) || (typeof req.params.id !== 'string' && !(req.params.id instanceof String))) {
+		const id = parseID(req.params);
+
+		if(!id) {
 			return res.status(400).send({
 				message: 'no id was given'
 			});
 		}
 
-		const id = req.params.id;
+		let query = Product.findById(id);
 
-		Product
-			.findById(id)
+		if('seller' in req.query && req.query.seller) {
+			query = query
+				.populate('seller')
+				.exec();
+		}
+
+		query
 			.then(data => {
 				if(!data) {
 					res.statuse(404).send({
@@ -100,7 +105,9 @@ export default {
 			});
 	},
 	update(req, res) {
-		if (!('id' in req.params) || (typeof req.params.id !== 'string' && !(req.params.id instanceof String))) {
+		const id = parseID(req.params);
+
+		if(!id) {
 			return res.status(400).send({
 				message: 'no id was given'
 			});
@@ -114,21 +121,13 @@ export default {
 			alt: req.body.alt || ''
 		};
 
-		const missingKeys = Object
+		const cleanObject = Object
 			.entries(parsedRequestBody)
 			.filter(ent => ent[1] === undefined || ent[1] == null || Number.isNaN(ent[1]))
-			.map(arr => arr[0]);
-
-		// Validate request
-		if (missingKeys.length > 0) {
-			res.status(400).send({ message: 'Missing keys: ' + missingKeys.join(', ') });
-			return;
-		}
-
-		const id = req.params.id;
+			.reduce((obj, arr) => obj[arr[0]] = obj[1], {});
 
 		Product
-			.findByIdAndUpdate(id, parsedRequestBody)
+			.findByIdAndUpdate(id, cleanObject)
 			.then(data => {
 				if (!data) {
 					res.status(404).send({
@@ -140,7 +139,7 @@ export default {
 			})
 			.catch(err => {
 				res.status(500).send({
-					message: 'Error updating Tutorial with id=' + id
+					message: 'Error updating Product with id=' + id
 				});
 				console.log(err);
 			});
@@ -170,7 +169,7 @@ export default {
 			})
 			.catch(err => {
 				res.status(500).send({
-					message: 'Could not delete Tutorial with id=' + id
+					message: 'Could not delete Product with id=' + id
 				});
 				console.log(err);
 			});

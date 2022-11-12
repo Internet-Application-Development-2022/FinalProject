@@ -7,7 +7,11 @@ const ProductSchema = Schema(
 		price: Number,
 		catagory: String,
 		img: String,
-		alt: String
+		alt: String,
+		seller: {
+			type: Schema.Types.ObjectId,
+			ref: 'Seller'
+		}
 	},
 	{ timestamps: true }
 );

@@ -7,10 +7,11 @@ services:
     build:
       context: ./app
       target: prod
-    ports:
-      - 80:80
     env_file: ./.env
+    ports:
+      - 8080:8080
     environment:
+      - TWITTER_BEARER_TOKEN=$TWITTER_BEARER_TOKEN
       - DB_HOST=mongo
       - DB_USER=$MONGODB_USER
       - DB_PASSWORD=$MONGODB_PASSWORD
