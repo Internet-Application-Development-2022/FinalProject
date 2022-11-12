@@ -9,7 +9,7 @@ services:
       target: debug
     env_file: ./.env
     ports:
-      - 80:80
+      - 8080:8080
       - 9229:9229
     environment:
       - TWITTER_BEARER_TOKEN=$TWITTER_BEARER_TOKEN
