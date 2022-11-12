@@ -123,8 +123,11 @@ export default {
 
 		const cleanObject = Object
 			.entries(parsedRequestBody)
-			.filter(ent => ent[1] === undefined || ent[1] == null || Number.isNaN(ent[1]))
-			.reduce((obj, arr) => obj[arr[0]] = obj[1], {});
+			.filter(([key, val]) => !(val === undefined || val == null || Number.isNaN(val)))
+			.reduce((obj, [key, val]) => {
+				obj[key] = val;
+				return obj;
+			}, {});
 
 		Product
 			.findByIdAndUpdate(id, cleanObject)
