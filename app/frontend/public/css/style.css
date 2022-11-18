@@ -252,10 +252,13 @@ body {
 
 #register {
    text-align: center;
+   margin: auto;
+   width: 400px;
+   
 }
 
-#register form>div {
-   padding: 5px;
+#register * {
+   margin-top: 4px;
 }
 
 #join {
