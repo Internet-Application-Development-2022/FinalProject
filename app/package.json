@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "debug": "nodemon --inspect-brk=0.0.0.0 -L",
-    "debuggable": "nodemon --inspect=0.0.0.0 -L",
+    "debug": "nodemon --watch backend --inspect-brk=0.0.0.0 -L",
+    "debuggable": "nodemon --watch backend --inspect=0.0.0.0 -L",
     "lint": "eslint --fix ."
   },
   "repository": {

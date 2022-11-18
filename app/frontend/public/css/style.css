@@ -245,8 +245,6 @@ body {
 #sig-canvas {
    border: 2px dotted #CCCCCC;
    border-radius: 15px;
-   width: 175px;
-   height: 75px;
    cursor: crosshair;
  }
 

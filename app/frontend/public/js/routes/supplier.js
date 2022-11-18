@@ -1,226 +1,155 @@
 import $ from 'jquery';
 import { Route } from './router.js';
 
-export class SuppRoute extends Route {
+export class SupplierRoute extends Route {
+	canvas;
+	signatureInput;
+	signatureData;
+
 	constructor() {
 		super('Supplier');
+
+		this.signatureInput = $('<input>')
+			.attr('type', 'text')
+			.attr('id', 'signature')
+			.hide();
+
+		this.signatureData = {
+			drawing: false,
+			mousePos: {
+				x: 0,
+				y: 0
+			},
+			lastPos: {
+				x: 0,
+				y: 0
+			}
+		};
+
+		this.canvas = $('<canvas>')
+			.attr('id', 'sig-canvas')
+			.attr('width', 175)
+			.attr('height', 75)
+			.on('mousedown', e => {
+				this.signatureData.drawing = true;
+				this.signatureData.lastPos = this.getMousePos(e);
+			})
+			.on('mouseup', () => {
+				this.signatureData.drawing = false;
+			})
+			.on('mousemove', e => {
+				this.signatureData.mousePos = this.getMousePos(e);
+			});
+
+		this.ctx.strokeStyle = '#222222';
+		this.ctx.lineWidth = 2;
+
+		const drawLoop = () => {
+			window.requestAnimationFrame(drawLoop);
+			this.renderCanvas();
+		};
+		drawLoop();
+	}
+
+	get ctx() {
+		return this.canvas[0].getContext('2d');
 	}
 
 	async onSelect(content, params) {
-      $(content)
-          .append(
-              this.genRegisterMenu()
-          )
-      // $('#sig-canvas').sketch();
-  }
-  
-  genRegisterMenu() {
-    return $('<section>')
-        .attr('id', 'register')
-        .addClass('section-p1')
-        .append(
-          $('<div>')
-              .addClass('pro-container')
-              .append(
-                $('<input>')
-                  .addClass('form-control')
-                  .attr('placeholder', 'Username')
-                  .attr('type', 'text')
-                  .attr('id', 'username')
-              )
-              .append(
-                $('<input>')
-                  .addClass('form-control')
-                  .attr('placeholder', 'Password')
-                  .attr('type', 'password')
-                  .attr('id', 'password')
-              )
-              .append(
-                $('<input>')
-                  .addClass('form-control')
-                  .attr('placeholder', 'email')
-                  .attr('type', 'email')
-                  .attr('id', 'email')
-              )
-              .append(
-                $('<textarea>')
-                  .addClass('form-control')
-                  .attr('placeholder', 'Request description')
-                  .attr('id', 'reqdesc')
-              )
-              .append(
-                $('<canvas>')
-                  .attr('id', 'sig-canvas')
-              )
-              // .append(
-              //   this.genMap()
-              // )
-              .append(
-                $('<button>')
-                .attr('type', 'submit')
-                .addClass('btn btn-outline-dark')
-                .text('Submit')
-              )
-        )
-  }
-  // genMap() {
-  //  return $('<div>')
-  //           .addClass('map')
-  //           .attr('id', 'map')
-  //           .append(
-  //             $('<div>')
-  //               .addClass('mapouter')
-  //               .append( 
-  //                 $('<div>')
-  //                   .addClass('gmap_canvas')
-  //                   .append(
-  //                     $('<iframe>')
-  //                       .attr('id','gmap_canvas')
-  //                       .attr('src','https://maps.google.com/maps?q=reshon&t=&z=13&ie=UTF8&iwloc=&output=embed')
-  //                       .attr('width','547')
-  //                       .attr('height','500')
-  //                       .attr('frameborder','0')
-  //                       .attr('scrolling','no')
-  //                       .attr('marginheight','0')
-  //                       .attr('marginwidth','0')
-  //                   )
-  //               )
-  //           )
-  // }
+		$(content)
+			.append(
+				this.genRegisterMenu()
+			);
+	}
 
+	genRegisterMenu() {
+		return $('<section>')
+			.attr('id', 'register')
+			.addClass('section-p1')
+			.append(
+				$('<form>')
+					.addClass('pro-container')
+					.attr('action', '/api/seller-requests')
+					.attr('method', 'post')
+					.append(
+						this.signatureInput
+					)
+					.append(
+						$('<input>')
+							.addClass('form-control')
+							.attr('placeholder', 'name')
+							.attr('type', 'text')
+							.attr('id', 'username')
+					)
+					.append(
+						$('<input>')
+							.addClass('form-control')
+							.attr('placeholder', 'email')
+							.attr('type', 'email')
+							.attr('id', 'email')
+					)
+					.append(
+						$('<textarea>')
+							.addClass('form-control')
+							.attr('placeholder', 'Request description')
+							.attr('id', 'reqdesc')
+					)
+					.append(
+						this.canvas
+					)
+					.append(
+						$('<button>')
+							.addClass('btn btn-outline-dark')
+							.attr('type', 'submit')
+							.text('Submit')
+							.on('submit', () => {
+								this.signatureInput.val(this.canvas[0].toDataURL());
+							})
+					)
+			);
+	}
+
+	getMousePos(mouseEvent) {
+		var rect = this.canvas[0].getBoundingClientRect();
+		return {
+			x: mouseEvent.clientX - rect.left,
+			y: mouseEvent.clientY - rect.top
+		};
+	}
+
+	renderCanvas() {
+		const { mousePos, lastPos, drawing } = this.signatureData;
+
+		if (drawing) {
+			this.ctx.moveTo(lastPos.x, lastPos.y);
+			this.ctx.lineTo(mousePos.x, mousePos.y);
+			this.ctx.stroke();
+			this.signatureData.lastPos = mousePos;
+		}
+	}
+
+	clearCanvas() {
+		this.canvas.attr('width', this.canvas.attr('width'));
+	}
+
+	setupSignature() {
+		/*
+		// Set up the UI
+		var sigText = document.getElementById('sig-dataUrl');
+		var sigImage = document.getElementById('sig-image');
+		var clearBtn = document.getElementById('sig-clearBtn');
+		var submitBtn = document.getElementById('sig-submitBtn');
+
+		clearBtn.addEventListener('click', () => {
+			this.clearCanvas();
+			sigText.innerHTML = 'Data URL for your signature will go here!';
+			sigImage.setAttribute('src', '');
+		}, false);
+		submitBtn.addEventListener('click', () => {
+			var dataUrl = this.canvas[0].toDataURL();
+			sigText.innerHTML = dataUrl;
+			sigImage.setAttribute('src', dataUrl);
+		}, false);
+    */
+	}
 }
-
-    // function() {
-    //   window.requestAnimFrame = (function(callback) {
-    //     return window.requestAnimationFrame ||
-    //       window.webkitRequestAnimationFrame ||
-    //       window.mozRequestAnimationFrame ||
-    //       window.oRequestAnimationFrame ||
-    //       window.msRequestAnimaitonFrame ||
-    //       function(callback) {
-    //         window.setTimeout(callback, 1000 / 60);
-    //       };
-    //   })();
-    
-    //   var canvas = document.getElementById("sig-canvas");
-    //   var ctx = canvas.getContext("2d");
-    //   ctx.strokeStyle = "#222222";
-    //   ctx.lineWidth = 4;
-    
-    //   var drawing = false;
-    //   var mousePos = {
-    //     x: 0,
-    //     y: 0
-    //   };
-    //   var lastPos = mousePos;
-    
-    //   canvas.addEventListener("mousedown", function(e) {
-    //     drawing = true;
-    //     lastPos = getMousePos(canvas, e);
-    //   }, false);
-    
-    //   canvas.addEventListener("mouseup", function(e) {
-    //     drawing = false;
-    //   }, false);
-    
-    //   canvas.addEventListener("mousemove", function(e) {
-    //     mousePos = getMousePos(canvas, e);
-    //   }, false);
-    
-    //   // Add touch event support for mobile
-    //   canvas.addEventListener("touchstart", function(e) {
-    
-    //   }, false);
-    
-    //   canvas.addEventListener("touchmove", function(e) {
-    //     var touch = e.touches[0];
-    //     var me = new MouseEvent("mousemove", {
-    //       clientX: touch.clientX,
-    //       clientY: touch.clientY
-    //     });
-    //     canvas.dispatchEvent(me);
-    //   }, false);
-    
-    //   canvas.addEventListener("touchstart", function(e) {
-    //     mousePos = getTouchPos(canvas, e);
-    //     var touch = e.touches[0];
-    //     var me = new MouseEvent("mousedown", {
-    //       clientX: touch.clientX,
-    //       clientY: touch.clientY
-    //     });
-    //     canvas.dispatchEvent(me);
-    //   }, false);
-    
-    //   canvas.addEventListener("touchend", function(e) {
-    //     var me = new MouseEvent("mouseup", {});
-    //     canvas.dispatchEvent(me);
-    //   }, false);
-    
-    //   function getMousePos(canvasDom, mouseEvent) {
-    //     var rect = canvasDom.getBoundingClientRect();
-    //     return {
-    //       x: mouseEvent.clientX - rect.left,
-    //       y: mouseEvent.clientY - rect.top
-    //     }
-    //   }
-    
-    //   function getTouchPos(canvasDom, touchEvent) {
-    //     var rect = canvasDom.getBoundingClientRect();
-    //     return {
-    //       x: touchEvent.touches[0].clientX - rect.left,
-    //       y: touchEvent.touches[0].clientY - rect.top
-    //     }
-    //   }
-    
-    //   function renderCanvas() {
-    //     if (drawing) {
-    //       ctx.moveTo(lastPos.x, lastPos.y);
-    //       ctx.lineTo(mousePos.x, mousePos.y);
-    //       ctx.stroke();
-    //       lastPos = mousePos;
-    //     }
-    //   }
-    
-    //   // Prevent scrolling when touching the canvas
-    //   document.body.addEventListener("touchstart", function(e) {
-    //     if (e.target == canvas) {
-    //       e.preventDefault();
-    //     }
-    //   }, false);
-    //   document.body.addEventListener("touchend", function(e) {
-    //     if (e.target == canvas) {
-    //       e.preventDefault();
-    //     }
-    //   }, false);
-    //   document.body.addEventListener("touchmove", function(e) {
-    //     if (e.target == canvas) {
-    //       e.preventDefault();
-    //     }
-    //   }, false);
-    
-    //   (function drawLoop() {
-    //     requestAnimFrame(drawLoop);
-    //     renderCanvas();
-    //   })();
-    
-    //   function clearCanvas() {
-    //     canvas.width = canvas.width;
-    //   }
-    
-    //   // Set up the UI
-    //   var sigText = document.getElementById("sig-dataUrl");
-    //   var sigImage = document.getElementById("sig-image");
-    //   var clearBtn = document.getElementById("sig-clearBtn");
-    //   var submitBtn = document.getElementById("sig-submitBtn");
-    //   clearBtn.addEventListener("click", function(e) {
-    //     clearCanvas();
-    //     sigText.innerHTML = "Data URL for your signature will go here!";
-    //     sigImage.setAttribute("src", "");
-    //   }, false);
-    //   submitBtn.addEventListener("click", function(e) {
-    //     var dataUrl = canvas.toDataURL();
-    //     sigText.innerHTML = dataUrl;
-    //     sigImage.setAttribute("src", dataUrl);
-    //   }, false);
-    
-    // }();
