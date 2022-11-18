@@ -4,7 +4,7 @@ import { HomeRoute } from './routes/home.js';
 import { ShopRoute } from './routes/shop.js';
 import { ProductRoute } from './routes/product.js';
 import { AboutRoute } from './routes/about.js';
-import { SuppRoute } from './routes/supplier.js';
+import { SupplierRoute } from './routes/supplier.js';
 
 
 
@@ -12,7 +12,7 @@ export const HomePage = new HomeRoute();
 export const ShopPage = new ShopRoute();
 export const ProductPage = new ProductRoute();
 export const AboutPage = new AboutRoute();
-export const SupplierPage = new SuppRoute();
+export const SupplierPage = new SupplierRoute();
 
 export const PageRouter = new Router(HomePage, $('main')[0], [
 	HomePage,
