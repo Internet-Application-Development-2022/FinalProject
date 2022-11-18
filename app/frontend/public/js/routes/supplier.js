@@ -10,8 +10,10 @@ export class SupplierRoute extends Route {
 		super('Supplier');
 
 		this.signatureInput = $('<input>')
-			.attr('type', 'text')
-			.attr('id', 'signature')
+			.attr({
+				type: 'text',
+				name: 'signature'
+			})
 			.hide();
 
 		this.signatureData = {
@@ -27,9 +29,11 @@ export class SupplierRoute extends Route {
 		};
 
 		this.canvas = $('<canvas>')
-			.attr('id', 'sig-canvas')
-			.attr('width', 175)
-			.attr('height', 75)
+			.attr({
+				id: 'sig-canvas',
+				width: 175,
+				height: 75
+			})
 			.on('mousedown', e => {
 				this.signatureData.drawing = true;
 				this.signatureData.lastPos = this.getMousePos(e);
@@ -69,30 +73,64 @@ export class SupplierRoute extends Route {
 			.append(
 				$('<form>')
 					.addClass('pro-container')
-					.attr('action', '/api/seller-requests')
-					.attr('method', 'post')
+					.attr({
+						action: '/api/seller-requests',
+						method: 'post'
+					})
 					.append(
 						this.signatureInput
 					)
 					.append(
 						$('<input>')
 							.addClass('form-control')
-							.attr('placeholder', 'name')
-							.attr('type', 'text')
-							.attr('id', 'username')
+							.attr({
+								placeholder: 'name',
+								type: 'text',
+								name: 'name'
+							})
 					)
 					.append(
 						$('<input>')
 							.addClass('form-control')
-							.attr('placeholder', 'email')
-							.attr('type', 'email')
-							.attr('id', 'email')
+							.attr({
+								placeholder: 'email',
+								type: 'email',
+								name: 'email'
+							})
+					)
+					.append(
+						$('<input>')
+							.addClass('form-control')
+							.attr({
+								placeholder: 'phone',
+								type: 'tel',
+								name: 'phone',
+								pattern: '[0-9]{10}'
+							})
+					)
+					.append(
+						$('<input>')
+							.addClass('form-control')
+							.attr({
+								placeholder: 'lat',
+								type: 'number',
+								name: 'location[0]'
+							})
+					)
+					.append(
+						$('<input>')
+							.addClass('form-control')
+							.attr({
+								placeholder: 'lon',
+								type: 'number',
+								name: 'location[1]'
+							})
 					)
 					.append(
 						$('<textarea>')
 							.addClass('form-control')
 							.attr('placeholder', 'Request description')
-							.attr('id', 'reqdesc')
+							.attr('name', 'text')
 					)
 					.append(
 						this.canvas
@@ -102,7 +140,7 @@ export class SupplierRoute extends Route {
 							.addClass('btn btn-outline-dark')
 							.attr('type', 'submit')
 							.text('Submit')
-							.on('submit', () => {
+							.on('click', () => {
 								this.signatureInput.val(this.canvas[0].toDataURL());
 							})
 					)
