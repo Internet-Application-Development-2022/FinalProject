@@ -21,13 +21,13 @@ function parseRequestParams(body) {
 		'location' in body &&
 		Array.isArray(body.location) &&
 		body.location.length === 2 &&
-		body.location.every(e => typeof e === 'number' || e instanceof Number)
+		body.location.every(e => !isNaN(e))
 	)) {
 		badValues.push('location');
 	}
 
 	if(badValues.length > 0) {
-		return false;
+		return [false, badValues];
 	}
 
 	return [
@@ -38,7 +38,7 @@ function parseRequestParams(body) {
 			phone: body.phone,
 			location: {
 				type: 'Point',
-				coordinates: body.location
+				coordinates: body.location.map(Number)
 			},
 			text: body.text,
 			status: 'Pending'
@@ -61,7 +61,7 @@ export default {
 		seller
 			.save()
 			.then(data => {
-				res.send(data);
+				res.status(303).header('Location', '/').send(data);
 			})
 			.catch(err => {
 				res.status(500).send({
