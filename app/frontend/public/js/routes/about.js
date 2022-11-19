@@ -30,9 +30,11 @@ export class AboutRoute extends Route {
 			return elem;
 		});
 	}
+
 	get sellers() {
 		return this.fetchedSellers;
 	}
+
 	async onSelect(content, params) {
 		const contentElement = $(content)
 			.append(
@@ -46,7 +48,6 @@ export class AboutRoute extends Route {
 			);
 
 		this.fetchContent(contentElement);
-        
 	}
 
 	async fetchContent(element) {
@@ -59,6 +60,10 @@ export class AboutRoute extends Route {
 			this.fetchedTwitts = twitterData;
 			this.fetchedSellers = sellersData;
 
+			if(!PageRouter.isSelected(this)) {
+				return;
+			}
+
 			element
 				.append(
 					this.genSelllersMaps()
@@ -68,8 +73,7 @@ export class AboutRoute extends Route {
 				)
 				.append(
 					this.genTwiConteiner()
-				)
-			;
+				);
 		});
 	}
 
@@ -132,16 +136,16 @@ export class AboutRoute extends Route {
 				.attr('id','soon')
 				.append($('<h2>').text('Our Seller world Wide'))
 				.append($('<h4>').text('Here you can see our sellers location.'))
-                .append($('<div>')
-                    .attr('id','names')
+				.append($('<div>')
+					.attr('id','names')
 				    .append(this.sellers.map(p => this.genSellerElement(p))))
-			)
+			);
 
 	}
 	genSellerElement(seller) {
 		return $('<a>')
 			.text(seller.name)
-            .addClass('seller')
+			.addClass('seller')
 			.on('click',() => {
 				this.updateGoogleMap(seller.location);
 			});

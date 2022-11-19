@@ -6,12 +6,9 @@
   * Group By
   * 3 params for 2 queries
   * web socket
-  * about us bug
 * Nir
-  * Signature clear button
   * d3
 * Avi
-  * Admin Page floating "publish" button
 
 ## Technical Requirments
 * Node Express Backend

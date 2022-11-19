@@ -821,6 +821,10 @@ input.disabled {
 
 /* ---------------- Admin Page ---------------- */
 
+main#admin-main {
+   margin: 15px;
+}
+
 .chat-btn {
    position: fixed;
    right: 14px;
