@@ -184,17 +184,13 @@ export class Table {
 		return this.#element;
 	}
 
-	constructor(api, objects, RowClass) {
-		const emptyElement = {...objects[0]};
-
-		for(const key in emptyElement) {
-			emptyElement[key] = null;
-		}
+	constructor(api, objects, RowClass, Model) {
+		const emptyElement = new Model();
 
 		this.#api = api;
 		this.#element = $('<table>')
 			.addClass('table table-striped')
-			.append(this.generateHeaders(Object.keys(objects[0])))
+			.append(this.generateHeaders(Object.keys(emptyElement)))
 			.append($('<tbody>')
 				.append([emptyElement].concat(objects).map(o => new RowClass(this, o)))
 			);
@@ -236,7 +232,7 @@ export class Table {
 			headers: new Headers({
 				'Content-Type': 'application/json'
 			}),
-			body: JSON.stringify(object)
+			body: JSON.stringify(copy)
 		}).then(async (response) => {
 			if (!response.ok) {
 				const resp = await response.json();

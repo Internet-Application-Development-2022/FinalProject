@@ -320,6 +320,10 @@ footer a:hover {
    color: #088178;
 }
 
+h1 {
+   text-shadow: 2px 2px black;
+}
+
 footer .copyright {
    width: 100%;
    text-align: center;

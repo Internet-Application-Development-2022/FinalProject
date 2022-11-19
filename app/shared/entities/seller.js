@@ -6,6 +6,10 @@ export class Seller {
 	signature;
 	location;
 
+	constructor() {
+		this.location = Array.from(Array(2));
+	}
+
 	toJSON() {
 		return {
 			_id: this._id,

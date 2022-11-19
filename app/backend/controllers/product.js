@@ -209,8 +209,15 @@ export default {
 	bySeller(req, res) {
 		Product
 			.aggregate()
+			.lookup({
+				from: 'sellers',
+				localField: 'seller',
+				foreignField: '_id',
+				as: 'sellerInfo',
+			})
 			.group({
 				_id: '$seller',
+				name: { '$first': { '$first': '$sellerInfo.name' } },
 				count: { $sum: 1 },
 				products: { $push: {
 					_id: '$_id',
