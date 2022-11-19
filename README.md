@@ -2,10 +2,8 @@
 
 ## To Do
 * Tom
-  * Admin Page
   * Group By
   * 3 params for 2 queries
-  * web socket
 * Nir
   * d3
 * Avi

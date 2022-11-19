@@ -76,7 +76,12 @@ const httpServer = createServer(app);
 const io = new Server(httpServer);
 
 io.on('connection', soc => {
-	// something
+	console.log(soc.id + ' connected');
+
+	soc.on('advertise', msg => {
+		console.log('emitting: ' + msg);
+		io.emit('advertise', msg);
+	});
 });
 
 // set port, run server
