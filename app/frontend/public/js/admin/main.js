@@ -1,13 +1,14 @@
 import $ from 'jquery';
 
-import { Table, BaseRow } from './table.js';
-import { SellerRow } from './rows/sellersRow.js';
+import { Table } from './table.js';
+import { ProductrRow, SellerRow } from './rows.js';
 
 const CONTENT = $('main');
 
 const APIS = {
-	'/api/products': ['products', BaseRow],
-	'/api/sellers': ['sellers', SellerRow]
+	'/api/products': ['products', ProductrRow],
+	'/api/sellers': ['sellers', SellerRow],
+	'/api/seller-requests': ['sellers request', SellerRow]
 };
 
 async function tableFetch(api, RowClass) {

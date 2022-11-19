@@ -1,8 +1,18 @@
 import $ from 'jquery';
 
+const Identity = (a => a);
+
 export class BaseRow extends HTMLTableRowElement {
 	table;
 	data;
+
+	static defineElement() {
+		window.customElements.define(`${this.name.toLowerCase()}-tr`, this, {extends: 'tr'});
+	}
+
+	static {
+		this.defineElement();
+	}
 
 	constructor(table, data) {
 		super();
@@ -76,26 +86,61 @@ export class BaseRow extends HTMLTableRowElement {
 		return $('<td>').append(this.keyToElement(key));
 	}
 
+	input(key, fromString, fromObject, toObject, onUpdate, onError) {
+		fromString = fromString || Identity;
+		fromObject = fromObject || Identity;
+		toObject = toObject || Identity;
+
+		const update = async newVal => {
+			const parsed = fromString(newVal);
+			if(
+				parsed === undefined ||
+				parsed === null ||
+				parsed === fromObject(this.data[key])
+			) {
+				return;
+			}
+
+			const objectUpdate = this.updateObject(key, toObject(parsed));
+
+			if (onUpdate) {
+				objectUpdate.then(function() { return onUpdate(...arguments); });
+			}
+	
+			if (onError) {
+				objectUpdate.catch(function(e) {
+					onError(...arguments);
+					throw e;
+				});
+			}
+
+			return objectUpdate;
+		};
+
+		return this.generateInput(
+			() => fromObject(this.data[key]).toString(),
+			update
+		);
+	}
+
+	numberInput(key, fromObject, toObject) {
+		return this.input(
+			key,
+			strVal => isNaN(strVal) ? null : Number(strVal),
+			fromObject,
+			toObject
+		).attr('type', 'number');
+	}
+
 	keyToElement(key) {
 		switch(key) {
 		case '_id':
 			return $('<span>').text(this.data._id);
 		default:
-			return this.generateInput(
-				() => this.data[key].toString(),
-				async newVal => {
-					const val = isNaN(newVal) ? newVal : Number(newVal);
-					if (val === this.data[key]) {
-						return;
-					}
-					return this.updateObject(key, val);
-				}
-			).parent();
+			return this.input(key).parent();
 		}
 	}
 }
-
-window.customElements.define('admin-tr', BaseRow, {extends: 'tr'});
 
 
 export class Table {
@@ -110,6 +155,7 @@ export class Table {
 	constructor(api, objects, RowClass) {
 		this.#api = api;
 		this.#element = $('<table>')
+			.addClass('table table-striped')
 			.append(this.generateHeaders(Object.keys(objects[0])))
 			.append($('<tbody>')
 				.append(objects.map(o => new RowClass(this, o)))

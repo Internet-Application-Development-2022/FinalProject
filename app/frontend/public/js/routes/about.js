@@ -50,7 +50,7 @@ export class AboutRoute extends Route {
 	}
 
 	async fetchContent(element) {
-		Promise.all([ 
+		Promise.all([
 			fetch('/api/twitter')
 				.then(response => response.json()),
 			fetch('/api/sellers')

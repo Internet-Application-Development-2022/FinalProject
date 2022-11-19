@@ -1,21 +1,17 @@
 # Final Project
 
 ## To Do
-* backend
-  * connect with front
-  * create models
-  * admin page
-  * socket.io
-  * WebService
-* about page
-  * map
-  * api - twitter #amazon usage
-  * video
-* new seller form
-  * canvas - base64 signature image
-* shop page
-  * filter
-* new supplier contact page
+* Tom
+  * Admin Page
+  * Group By
+  * 3 params for 2 queries
+  * web socket
+  * about us bug
+* Nir
+  * Signature clear button
+  * d3
+* Avi
+  * Admin Page floating "publish" button
 
 ## Technical Requirments
 * Node Express Backend
