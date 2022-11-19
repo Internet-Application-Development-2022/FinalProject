@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import * as d3 from 'https://cdn.skypack.dev/d3@7';
 
 import { Table } from './table.js';
 import { ProductrRow, SellerRow } from './rows.js';
