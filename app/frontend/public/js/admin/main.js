@@ -112,9 +112,26 @@ function BarChart(data, {
 	return svg.node();
   }
 
-function createBarChart() {
-	data = null
-	BarChart()
+function createProductsByCatagory() {
+	fetch('/api/products')
+		.then(res => res.json())
+		.then(data => {
+			const dataGroupBy = Object.entries(data.reduce((obj, val) => {
+				obj[val.catagory] = (obj[val.catagory] || 0) + 1; return obj;
+				}, {})).map(([key, val]) => {
+					return { catagory: key, amount: val };
+				});	
+			const svg = BarChart(dataGroupBy, {
+							x: d => d.catagory,
+							y: d => d.amount,
+							xDomain: d3.groupSort(dataGroupBy, ([d]) => -d.amount, d => d.catagory),
+							yLabel: "↑ Products Amount",
+							color: "steelblue"
+			})
+			CONTENT.append(svg)	
+		});
+
+
 }
 
 $(() => {
@@ -138,5 +155,5 @@ $(() => {
 			})),
 		dataSection
 	]).append(messageSenderElements);
-	createBarChart(CONTENT);
+	createProductsByCatagory();
 });
