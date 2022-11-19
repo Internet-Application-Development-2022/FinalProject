@@ -43,7 +43,10 @@ export class SupplierRoute extends Route {
 			})
 			.on('mousemove', e => {
 				this.signatureData.mousePos = this.getMousePos(e);
-			});
+			})
+      .on('mouseleave', e => {
+        this.signatureData.drawing = false
+      });
 
 		this.ctx.strokeStyle = '#222222';
 		this.ctx.lineWidth = 2;
@@ -79,10 +82,12 @@ export class SupplierRoute extends Route {
 					})
 					.append(
 						this.signatureInput
+            .prop('required',true)
 					)
 					.append(
 						$('<input>')
 							.addClass('form-control')
+              .prop('required',true)
 							.attr({
 								placeholder: 'name',
 								type: 'text',
@@ -92,6 +97,7 @@ export class SupplierRoute extends Route {
 					.append(
 						$('<input>')
 							.addClass('form-control')
+              .prop('required',true)
 							.attr({
 								placeholder: 'email',
 								type: 'email',
@@ -101,6 +107,7 @@ export class SupplierRoute extends Route {
 					.append(
 						$('<input>')
 							.addClass('form-control')
+              .prop('required',true)
 							.attr({
 								placeholder: 'phone',
 								type: 'tel',
@@ -111,6 +118,7 @@ export class SupplierRoute extends Route {
 					.append(
 						$('<input>')
 							.addClass('form-control')
+              .prop('required',true)
 							.attr({
 								placeholder: 'lat',
 								type: 'number',
@@ -120,6 +128,7 @@ export class SupplierRoute extends Route {
 					.append(
 						$('<input>')
 							.addClass('form-control')
+              .prop('required',true)
 							.attr({
 								placeholder: 'lon',
 								type: 'number',
@@ -129,12 +138,29 @@ export class SupplierRoute extends Route {
 					.append(
 						$('<textarea>')
 							.addClass('form-control')
-							.attr('placeholder', 'Request description')
-							.attr('name', 'text')
+              .prop('required',true)
+							.attr({
+                placeholder: 'Request description',
+                name: 'text',
+              })
 					)
-					.append(
-						this.canvas
-					)
+          .append(
+            $('<div>')
+            .addClass('row')
+            .append(
+              this.canvas
+              .addClass('col-auto')
+            )
+            .append(
+              $('<button>')
+                  .addClass('col-auto btn btn-primary btn-sm')
+                  .attr('type', 'button')
+                  .text('clear')
+                  .click(() => {
+                    this.canvas.attr('width', this.canvas.attr('width'));
+                  })
+            )
+          )
 					.append(
 						$('<button>')
 							.addClass('btn btn-outline-dark')
@@ -171,23 +197,5 @@ export class SupplierRoute extends Route {
 	}
 
 	setupSignature() {
-		/*
-		// Set up the UI
-		var sigText = document.getElementById('sig-dataUrl');
-		var sigImage = document.getElementById('sig-image');
-		var clearBtn = document.getElementById('sig-clearBtn');
-		var submitBtn = document.getElementById('sig-submitBtn');
-
-		clearBtn.addEventListener('click', () => {
-			this.clearCanvas();
-			sigText.innerHTML = 'Data URL for your signature will go here!';
-			sigImage.setAttribute('src', '');
-		}, false);
-		submitBtn.addEventListener('click', () => {
-			var dataUrl = this.canvas[0].toDataURL();
-			sigText.innerHTML = dataUrl;
-			sigImage.setAttribute('src', dataUrl);
-		}, false);
-    */
 	}
 }

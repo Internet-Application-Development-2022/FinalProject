@@ -242,23 +242,6 @@ body {
    right: 10px;
 }
 
-#sig-canvas {
-   border: 2px dotted #CCCCCC;
-   border-radius: 15px;
-   cursor: crosshair;
- }
-
-#register {
-   text-align: center;
-   margin: auto;
-   width: 400px;
-   
-}
-
-#register * {
-   margin-top: 4px;
-}
-
 #join {
    display: flex;
    flex-direction: column;
@@ -684,4 +667,32 @@ cursor: pointer;
    position: absolute;
    bottom: 20px;
    right: 10px;
+}
+
+/* Supplier Page */
+#sig-canvas {
+   border: 2px dotted #CCCCCC;
+   border-radius: 15px;
+   cursor: crosshair;
+ }
+
+#register {
+   text-align: center;
+   margin: auto;
+   width: 400px;
+   
+}
+
+#register * {
+   margin-top: 4px;
+}
+
+#register div {
+   width: 190px;
+   height: 75px;
+}
+
+#register div button {
+   width: 50px;
+   height: 30%;
 }
