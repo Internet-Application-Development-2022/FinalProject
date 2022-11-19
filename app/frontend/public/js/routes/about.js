@@ -1,12 +1,27 @@
 import $ from 'jquery';
 import { Route } from './router.js';
 import { PageRouter, ProductPage, ShopPage} from '../routes.js';
-
+//q='+'51.70324,10.970150'+'&
 export class AboutRoute extends Route {
 	fetchedTwitts;
+	fetchedSellers;
+	googleMap;
 
 	constructor() {
 		super('AboutUs');
+		this.googleMap= $('<iframe>')
+			.attr('id','gmap_canvas')
+			.attr('src','https://maps.google.com/maps?t=&z=13&ie=UTF8&iwloc=&output=embed')
+			.attr('width','547')
+			.attr('height','500')
+			.attr('frameborder','0')
+			.attr('scrolling','no')
+			.attr('marginheight','0')
+			.attr('marginwidth','0');
+	}
+	updateGoogleMap([lat,long])
+	{
+		this.googleMap.attr('src',`https://maps.google.com/maps?q=${lat},${long}&t=&z=13&ie=UTF8&iwloc=&output=embed`);
 	}
 
 	get twitts() {
@@ -15,41 +30,47 @@ export class AboutRoute extends Route {
 			return elem;
 		});
 	}
-
+	get sellers() {
+		return this.fetchedSellers;
+	}
 	async onSelect(content, params) {
+		const contentElement = $(content)
+			.append(
+				this.genAboutHeader()
+			)
+			.append(
+				this.genDetails()
+			)
+			.append(
+				this.genVideo()
+			);
 
-		this.fetchTwitts(
-			$(content)
-				.append(
-					this.genAboutHeader()
-				)
-				.append(
-					this.genDetails()
-				)
-				.append(
-					this.genVideo()
-				)
-				.append(
-					this.genSelllersMaps()
-				)
-		);
+		this.fetchContent(contentElement);
         
 	}
 
-	async fetchTwitts(element) {
-		fetch('/api/twitter')
-			.then(response => response.json())
-			.then(data => {
-				this.fetchedTwitts = data;
-				
-				element
-					.append(
-						this.genSocialHeader()
-					)
-					.append(
-						this.genTwiConteiner()
-					);
-			});
+	async fetchContent(element) {
+		Promise.all([ 
+			fetch('/api/twitter')
+				.then(response => response.json()),
+			fetch('/api/sellers')
+				.then(response => response.json())
+		]).then(([twitterData, sellersData]) => {
+			this.fetchedTwitts = twitterData;
+			this.fetchedSellers = sellersData;
+
+			element
+				.append(
+					this.genSelllersMaps()
+				)
+				.append(
+					this.genSocialHeader()
+				)
+				.append(
+					this.genTwiConteiner()
+				)
+			;
+		});
 	}
 
 	genAboutHeader() {
@@ -104,23 +125,26 @@ export class AboutRoute extends Route {
 					.addClass('mapouter')
 					.append($('<div>')
 						.addClass('gmap_canvas')
-						.append($('<iframe>')
-							.attr('id','gmap_canvas')
-							.attr('src','https://maps.google.com/maps?q='+'51.70324,10.970150'+'&t=&z=13&ie=UTF8&iwloc=&output=embed')
-							.attr('width','547')
-							.attr('height','500')
-							.attr('frameborder','0')
-							.attr('scrolling','no')
-							.attr('marginheight','0')
-							.attr('marginwidth','0')
-						)
+						.append(this.googleMap)
 					)
 				))
 			.append($('<div>')
 				.attr('id','soon')
 				.append($('<h2>').text('Our Seller world Wide'))
 				.append($('<h4>').text('Here you can see our sellers location.'))
-			);
+                .append($('<div>')
+                    .attr('id','names')
+				    .append(this.sellers.map(p => this.genSellerElement(p))))
+			)
+
+	}
+	genSellerElement(seller) {
+		return $('<a>')
+			.text(seller.name)
+            .addClass('seller')
+			.on('click',() => {
+				this.updateGoogleMap(seller.location);
+			});
 	}
 
 
