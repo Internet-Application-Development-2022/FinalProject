@@ -113,7 +113,7 @@ function BarChart(data, {
   }
 
 function createBarChart() {
-	data = 
+	data = null
 	BarChart()
 }
 
