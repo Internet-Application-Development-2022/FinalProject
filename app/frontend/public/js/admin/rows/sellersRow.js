@@ -45,7 +45,7 @@ export class SellerRow extends BaseRow {
 	keyToElement(key) {
 		switch(key) {
 		case 'location':
-			if(this.data.location === null) {
+			if(!this.data.location) {
 				this.data.location = Array.from(Array(2));
 			}
 			return this.generateLocationCell();
