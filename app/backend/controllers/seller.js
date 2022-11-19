@@ -26,7 +26,7 @@ function parseRequestParams(body) {
 	}
 
 	if(badValues.length > 0) {
-		return false;
+		return [false, badValues];
 	}
 
 	return [
