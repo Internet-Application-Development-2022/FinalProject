@@ -130,8 +130,12 @@ function createProductsByCatagory() {
 			})
 			CONTENT.append(svg)	
 		});
+}
 
-
+function createProductsBySeller() {
+	fetch('/api/products/by-seller')
+		.then(res => res.json())
+		.then(data => { console.log(data) })
 }
 
 $(() => {
@@ -156,4 +160,5 @@ $(() => {
 		dataSection
 	]).append(messageSenderElements);
 	createProductsByCatagory();
+	createProductsBySeller();
 });
