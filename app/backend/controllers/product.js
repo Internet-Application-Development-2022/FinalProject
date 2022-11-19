@@ -208,16 +208,13 @@ export default {
 	},
 	bySeller(req, res) {
 		Product
-			.aggregate([
-				{
-					$lookup: {
-					  from: "sellers",
-					  localField: "seller",
-					  foreignField: "_id",
-					  as: "sellerInfo",
-					},
-				},
-			])
+			.aggregate()
+			.lookup({
+				from: 'sellers',
+				localField: 'seller',
+				foreignField: '_id',
+				as: 'sellerInfo',
+			})
 			.group({
 				_id: '$seller',
 				name: { '$first': { '$first': '$sellerInfo.name' } },

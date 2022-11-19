@@ -135,15 +135,15 @@ function createProductsByCatagory() {
 }
 
 function createProductsBySeller() {
-	fetch('/api/products/by-seller')
+	return fetch('/api/products/by-seller')
 		.then(res => res.json())
-		.then(data => { CONTENT.append(BarChart(data, {
+		.then(data => BarChart(data, {
 			x: d => d.name,
 			y: d => d.count,
-			xDomain: d3.groupSort(data, ([d]) => -d.amount, d => d.catagory),
-			yLabel: "↑ Products Amount",
-			color: "steelblue"
-})) })
+			xDomain: d3.groupSort(data, ([d]) => -d.count, d => d.name),
+			yLabel: '↑ Products Amount',
+			color: 'steelblue'
+		}));
 }
 
 $(() => {
@@ -169,10 +169,9 @@ $(() => {
 	]).append(messageSenderElements);
 
 	Promise.all([
-		createProductsByCatagory()
+		createProductsByCatagory(),
+		createProductsBySeller()
 	]).then(resps => {
 		CONTENT.append(resps);
 	});
-
-	createProductsBySeller();
 });
