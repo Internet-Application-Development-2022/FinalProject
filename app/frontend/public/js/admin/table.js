@@ -20,10 +20,27 @@ export class BaseRow extends HTMLTableRowElement {
 		this.table = table;
 		this.data = data;
 
-		$(this).append(Object
-			.keys(this.data)
-			.map(key => this.generateCell(key))
-		);
+		$(this).append([
+			$('<td>').append($('<button>')
+				.on('click', () => {
+					this.table
+						.delete(data)
+						.then(() => {
+							$(this).remove();
+						})
+						.catch(e => {
+							alert('failed to delete entry\n' + e.toString());
+						});
+				})
+				.addClass('btn')
+				.append($('<i>')
+					.addClass('bi bi-trash')
+				)
+			),
+			...Object.keys(this.data).map(
+				key => this.generateCell(key)
+			)
+		]);
 	}
 
 	async updateObject(key, val) {
@@ -174,10 +191,19 @@ export class Table {
 		});
 	}
 
+	async delete(object) {
+		return fetch(this.#api + '/' + object._id, {
+			method: 'DELETE'
+		});
+	}
+
 	generateHeaders(keys) {
 		return $('<thead>')
 			.append($('<tr>')
-				.append(keys.map(k => $('<th>').text(k)))
+				.append([
+					$('<th>'),
+					...keys.map(k => $('<th>').text(k))
+				])
 			);
 	}
 }
