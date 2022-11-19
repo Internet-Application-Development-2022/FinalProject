@@ -31,6 +31,7 @@ h6 {
 
 .section-p1 {
    padding: 40px 80px;
+   background-color: white;
 }
 
 html {
@@ -240,23 +241,6 @@ body {
    position: absolute;
    bottom: 20px;
    right: 10px;
-}
-
-#sig-canvas {
-   border: 2px dotted #CCCCCC;
-   border-radius: 15px;
-   cursor: crosshair;
- }
-
-#register {
-   text-align: center;
-   margin: auto;
-   width: 400px;
-   
-}
-
-#register * {
-   margin-top: 4px;
 }
 
 #join {
@@ -548,6 +532,31 @@ cursor: pointer;
    font: bold;
 }
 
+#soon #names{
+   margin-top: 30px; 
+}
+#names .seller{
+   text-decoration: none;
+   background-color: #088178;
+   padding: 15px 20px;
+   border-radius: 4px;
+   color: #fff;
+   font-weight: 600;
+   cursor: pointer;
+   margin: 5px;
+   margin-top: 30px; 
+}
+#names .cur{
+   text-decoration: none;
+   background-color: #fff;
+   padding: 15px 20px;
+   border-radius: 4px;
+   color: #088178;
+   font-weight: 600;
+   cursor: pointer;
+   margin: 5px;
+   border: 1px solid #088178;
+}
 .mapouter{
    position:relative;
    text-align:right;
@@ -660,8 +669,8 @@ cursor: pointer;
    bottom: 20px;
    right: 10px;
 }
-/* ---------------- Login Page ---------------- */
 
+/* ---------------- Login Page ---------------- */
 
 .loginbody {
 	background: #f6f5f7;
@@ -906,4 +915,29 @@ button {
 input.table-input {
    width: 130px;
    text-align: center;
+}
+
+/* Supplier Page */
+
+#sig-canvas {
+   border: 2px dotted #CCCCCC;
+   border-radius: 15px;
+   cursor: crosshair;
+ }
+
+#register {
+   text-align: center;
+   margin: auto;
+   width: 400px;
+   background-color: #eceefb;
+   
+}
+
+#register * {
+   margin-top: 4px;
+}
+
+#register div button {
+   margin-top: -30%;
+   width: 30px
 }

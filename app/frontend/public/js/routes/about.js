@@ -132,13 +132,16 @@ export class AboutRoute extends Route {
 				.attr('id','soon')
 				.append($('<h2>').text('Our Seller world Wide'))
 				.append($('<h4>').text('Here you can see our sellers location.'))
-				.append(this.sellers.map(p => this.genSellerElement(p)))
-			);
+                .append($('<div>')
+                    .attr('id','names')
+				    .append(this.sellers.map(p => this.genSellerElement(p))))
+			)
 
 	}
 	genSellerElement(seller) {
-		return $('<div>')
+		return $('<a>')
 			.text(seller.name)
+            .addClass('seller')
 			.on('click',() => {
 				this.updateGoogleMap(seller.location);
 			});
