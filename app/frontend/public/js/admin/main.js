@@ -26,6 +26,7 @@ function dataDisplay(container, api, name, RowClass) {
 $(() => {
 	const dataSection = $('<section>');
 	CONTENT.append([
+		$('<span>').text('Select table: '),
 		$('<select>')
 			.addClass('list-group')
 			.on('input', e => {

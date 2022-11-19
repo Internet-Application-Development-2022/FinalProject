@@ -55,6 +55,7 @@ export class BaseRow extends HTMLTableRowElement {
 	generateInput(getString, update) {
 		const input = $('<input>')
 			.val(getString())
+			.addClass('table-input')
 			.prop('disabled', true)
 			.on('keydown', e => {
 				switch(e.key) {

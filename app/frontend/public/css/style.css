@@ -902,3 +902,8 @@ button {
 #check {
    display: none !important
 }
+
+input.table-input {
+   width: 130px;
+   text-align: center;
+}
