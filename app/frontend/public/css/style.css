@@ -694,3 +694,7 @@ cursor: pointer;
    width: 30px;
    margin-left: 4px;
 }
+
+#register p {
+   font-size: 10px;
+}

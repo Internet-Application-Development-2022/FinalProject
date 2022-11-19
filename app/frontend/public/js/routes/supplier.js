@@ -77,6 +77,10 @@ export class SupplierRoute extends Route {
 		return $('<section>')
 			.attr('id', 'register')
 			.addClass('section-p1')
+      		.append($('<h4>').text('New Supplier Request'))
+			.append($('<p>')
+				.text('Enter your information below and we will contact you to approve the request.')
+			)
 			.append(
 				$('<form>')
 					.addClass('pro-container')
