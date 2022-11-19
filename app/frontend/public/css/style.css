@@ -939,8 +939,13 @@ input.table-input {
    margin-top: 4px;
 }
 
+#register button {
+   color: white;
+}
+
 #register div button {
    margin-top: -30%;
    width: 30px;
    margin-left: 4px;
+   background-color: black;
 }
