@@ -24,6 +24,7 @@ export class SellerRow extends BaseRow {
 			$('<lable>')
 				.text('lat: ')
 				.append(lat),
+			$('<br>'),
 			$('<lable>')
 				.text('lon: ')
 				.append(lon)
@@ -34,6 +35,7 @@ export class SellerRow extends BaseRow {
 		const img = $('<img>').attr('src', this.data.signature);
 		return [
 			img,
+			$('<br>'),
 			this.input('signature', 0, 0, 0,
 				() => img.attr('src', this.data.signature))
 				.parent()
@@ -43,6 +45,9 @@ export class SellerRow extends BaseRow {
 	keyToElement(key) {
 		switch(key) {
 		case 'location':
+			if(this.data.location === null) {
+				this.data.location = Array.from(Array(2));
+			}
 			return this.generateLocationCell();
 		case 'signature':
 			return this.generateSignature();

@@ -5,6 +5,7 @@ const Identity = (a => a);
 export class BaseRow extends HTMLTableRowElement {
 	table;
 	data;
+	isCreateRow;
 
 	static defineElement() {
 		window.customElements.define(`${this.name.toLowerCase()}-tr`, this, {extends: 'tr'});
@@ -19,24 +20,36 @@ export class BaseRow extends HTMLTableRowElement {
 
 		this.table = table;
 		this.data = data;
+		this.isCreateRow = !data._id;
+
+		const deleteButton = $('<button>')
+			.addClass('btn')
+			.append($('<i>').addClass('bi bi-trash'))
+			.on('click', () => {
+				this.table
+					.delete(data)
+					.then(() => { $(this).remove(); })
+					.catch(e => {
+						alert('failed to delete entry\n' + e.toString());
+					});
+			});
+
+		const saveButton = $('<button>')
+			.addClass('btn')
+			.append($('<i>').addClass('bi bi-save'))
+			.on('click', () => {
+				this.table
+					.create(data)
+					.then(() => {
+						location.reload();
+					})
+					.catch(e => {
+						alert('failed to create entry\n' + e.toString());
+					});
+			});
 
 		$(this).append([
-			$('<td>').append($('<button>')
-				.on('click', () => {
-					this.table
-						.delete(data)
-						.then(() => {
-							$(this).remove();
-						})
-						.catch(e => {
-							alert('failed to delete entry\n' + e.toString());
-						});
-				})
-				.addClass('btn')
-				.append($('<i>')
-					.addClass('bi bi-trash')
-				)
-			),
+			$('<td>').append(this.isCreateRow ? saveButton : deleteButton),
 			...Object.keys(this.data).map(
 				key => this.generateCell(key)
 			)
@@ -44,18 +57,17 @@ export class BaseRow extends HTMLTableRowElement {
 	}
 
 	async updateObject(key, val) {
+		if(this.isCreateRow) {
+			this.data[key] = val;
+			return;
+		}
+
 		const copy = {...this.data};
 		copy[key] = val;
 
 		return this.table
 			.update(copy)
-			.then(response => {
-				if (!response.ok) {
-					throw new Error('Network response was not OK');
-				}
-
-				this.data[key] = val;
-			});
+			.then(() => { this.data[key] = val; });
 	}
 
 	quitEditing(input, value) {
@@ -84,6 +96,8 @@ export class BaseRow extends HTMLTableRowElement {
 				case 'Escape':
 					this.quitEditing(input, getString());
 				}
+			}).on('blur', () => {
+				this.quitEditing(input, getString());
 			});
 
 		$('<span>')
@@ -136,7 +150,7 @@ export class BaseRow extends HTMLTableRowElement {
 		};
 
 		return this.generateInput(
-			() => fromObject(this.data[key]).toString(),
+			() => fromObject(this.data[key])?.toString(),
 			update
 		);
 	}
@@ -171,12 +185,18 @@ export class Table {
 	}
 
 	constructor(api, objects, RowClass) {
+		const emptyElement = {...objects[0]};
+
+		for(const key in emptyElement) {
+			emptyElement[key] = null;
+		}
+
 		this.#api = api;
 		this.#element = $('<table>')
 			.addClass('table table-striped')
 			.append(this.generateHeaders(Object.keys(objects[0])))
 			.append($('<tbody>')
-				.append(objects.map(o => new RowClass(this, o)))
+				.append([emptyElement].concat(objects).map(o => new RowClass(this, o)))
 			);
 		this.editing = false;
 	}
@@ -188,12 +208,40 @@ export class Table {
 				'Content-Type': 'application/json'
 			}),
 			body: JSON.stringify(object)
+		}).then(async (response) => {
+			if (!response.ok) {
+				const resp = await response.json();
+				throw new Error(resp.message || 'Network response was not OK');
+			}
 		});
 	}
 
 	async delete(object) {
 		return fetch(this.#api + '/' + object._id, {
 			method: 'DELETE'
+		}).then(async (response) => {
+			if (!response.ok) {
+				const resp = await response.json();
+				throw new Error(resp.message || 'Network response was not OK');
+			}
+		});
+	}
+
+	async create(object) {
+		const copy = {...object};
+		delete copy['_id'];
+
+		return fetch(this.#api, {
+			method: 'POST',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			}),
+			body: JSON.stringify(object)
+		}).then(async (response) => {
+			if (!response.ok) {
+				const resp = await response.json();
+				throw new Error(resp.message || 'Network response was not OK');
+			}
 		});
 	}
 

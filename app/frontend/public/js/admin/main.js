@@ -2,6 +2,7 @@ import $ from 'jquery';
 
 import { Table } from './table.js';
 import { ProductrRow, SellerRow } from './rows.js';
+import { messageSenderElements } from './messageSender.js';
 
 const CONTENT = $('main');
 
@@ -43,5 +44,5 @@ $(() => {
 				return opt;
 			})),
 		dataSection
-	]);
+	]).append(messageSenderElements);
 });

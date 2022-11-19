@@ -12,7 +12,6 @@ const NAVIGATION_PAGES = [
 
 $(() => {
 	//const socket = io();
-	console.log('ready');
 	//console.log(socket);
 
 	$('#header > a').on('click', () => PageRouter.go());
@@ -22,7 +21,7 @@ $(() => {
 			.text(route.name)
 			.on('click', () => PageRouter.go(route));
 
-		PageRouter.addSelectListener(selected => {
+		PageRouter.addSelectListener(() => {
 			if (PageRouter.isSelected(route)) {
 				button.addClass('active');
 			}
