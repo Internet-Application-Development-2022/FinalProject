@@ -27,6 +27,7 @@ $(() => {
 	const dataSection = $('<section>');
 	CONTENT.append([
 		$('<select>')
+			.addClass('list-group')
 			.on('input', e => {
 				dataDisplay(dataSection, e.target.value, ...APIS[e.target.value]);
 			})
