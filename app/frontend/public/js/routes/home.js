@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import { Route } from './router.js';
-import { PageRouter, ProductPage, ShopPage } from '../routes.js';
+import { PageRouter, ProductPage, ShopPage, SupplierPage } from '../routes.js';
 
 export class HomeRoute extends Route {
 	static PRODUCT_NUM = 8;
@@ -133,7 +133,11 @@ export class HomeRoute extends Route {
 			.addClass('section-m1')
 			.append($('<h4>').text('Designer?'))
 			.append($('<h2>').text('Join our designers and sell your designs HERE'))
-			.append($('<button>').addClass('btn btn-light').text('Join us'))
+			.append($('<button>')
+						.addClass('btn btn-light')
+						.text('Join us')
+						.click(() => PageRouter.go(SupplierPage))
+					)
 
 	}
 }
