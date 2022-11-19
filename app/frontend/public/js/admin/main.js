@@ -1,17 +1,25 @@
 import $ from 'jquery';
+
 import { Table } from './table.js';
+import { SimpleRow } from './rows/simpleRow.js';
+import { SellerRow } from './rows/sellers.js';
 
 const CONTENT = $('main');
 
-async function tableFetch(api) {
+const APIS = {
+	'/api/products': ['products', SimpleRow],
+	'/api/sellers': ['sellers', SellerRow]
+};
+
+async function tableFetch(api, RowClass) {
 	return fetch(api)
 		.then(res => res.json())
-		.then(data => new Table(api, data));
+		.then(data => new Table(api, data, RowClass));
 }
 
-function dataDisplay(container, api, name) {
+function dataDisplay(container, api, name, RowClass) {
 	container.empty();
-	tableFetch(api)
+	tableFetch(api, RowClass)
 		.then(t => container.attr('id', name).append(t.element));
 }
 
@@ -20,18 +28,15 @@ $(() => {
 	CONTENT.append([
 		$('<select>')
 			.on('input', e => {
-				dataDisplay(dataSection, e.target.value, e.target.textContent);
+				dataDisplay(dataSection, e.target.value, ...APIS[e.target.value]);
 			})
-			.append([
-				['products', '/api/products'],
-				['sellers', '/api/sellers']
-			].map(([name, api], i) => {
+			.append(Object.entries(APIS).map(([api, [name, RowClass]], i) => {
 				const opt = $('<option>')
 					.attr('value', api)
 					.text(name);
 				if(i == 0) {
 					opt.attr('selected', '');
-					dataDisplay(dataSection, api, name);
+					dataDisplay(dataSection, api, name, RowClass);
 				}
 				return opt;
 			})),
