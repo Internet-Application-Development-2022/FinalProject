@@ -1,13 +1,12 @@
 import $ from 'jquery';
 
-import { Table } from './table.js';
-import { SimpleRow } from './rows/simpleRow.js';
-import { SellerRow } from './rows/sellers.js';
+import { Table, BaseRow } from './table.js';
+import { SellerRow } from './rows/sellersRow.js';
 
 const CONTENT = $('main');
 
 const APIS = {
-	'/api/products': ['products', SimpleRow],
+	'/api/products': ['products', BaseRow],
 	'/api/sellers': ['sellers', SellerRow]
 };
 

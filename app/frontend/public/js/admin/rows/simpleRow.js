@@ -7,12 +7,12 @@ export class SimpleRow extends BaseRow {
 	constructor(table, data) {
 		super(table, data);
 
-		$(this).append(
-			Object
-				.keys(this.data)
-				.map(key => this.generateCell(data, key))
+		$(this).append(Object
+			.keys(this.data)
+			.map(key => this.generateCell(key))
 		);
 	}
+
 }
 
 window.customElements.define('base-tr', SimpleRow, {extends: 'tr'});

@@ -9,69 +9,89 @@ export class BaseRow extends HTMLTableRowElement {
 
 		this.table = table;
 		this.data = data;
+
+		$(this).append(Object
+			.keys(this.data)
+			.map(key => this.generateCell(key))
+		);
 	}
 
-	async updateObject(object, key, val) {
-		if(object[key] === val) {
-			return;
-		}
-
-		const copy = {...object};
+	async updateObject(key, val) {
+		const copy = {...this.data};
 		copy[key] = val;
 
 		return this.table
 			.update(copy)
-			.then((response) => {
+			.then(response => {
 				if (!response.ok) {
 					throw new Error('Network response was not OK');
 				}
 
-				object[key] = val;
-			})
-			.catch(() => { alert(`Failed to update field ${key}`); });
+				this.data[key] = val;
+			});
 	}
 
-	quitEditing(cell, text) {
-		cell.empty();
-		cell.text(text);
+	quitEditing(input, value) {
+		if(!this.table.editing) {
+			return;
+		}
 
 		this.table.editing = false;
+		input
+			.prop('disabled', true)
+			.val(value);
 	}
 
-	generateCell(object, key) {
-		const cell = $('<td>');
+	generateInput(getString, update) {
 		const input = $('<input>')
-			.attr('type', 'text')
+			.val(getString())
+			.prop('disabled', true)
 			.on('keydown', e => {
 				switch(e.key) {
 				case 'Enter':
-					this
-						.updateObject(object, key, input.val())
-						.then(() => {
-							this.quitEditing(cell, object[key]);
-						});
+					update(input.val())
+						.then(() => this.quitEditing(input, getString()))
+						.catch(e => { alert(`Failed to update\n${e.toString()}`); });
 					break;
 				case 'Escape':
-					this.quitEditing(cell, object[key]);
+					this.quitEditing(input, getString());
 				}
 			});
 
-		return cell
-			.text(object[key].toString())
+		$('<span>')
+			.append(input)
 			.on('click', () => {
 				if(this.table.editing) {
 					return;
 				}
-
 				this.table.editing = true;
-
-				cell.empty();
-				cell.append(
-					input.attr('value', object[key].toString())
-				);
-
+				input.prop('disabled', false);
 				input.trigger('focus');
 			});
+
+		return input;
+	}
+
+	generateCell(key) {
+		return $('<td>').append(this.keyToElement(key));
+	}
+
+	keyToElement(key) {
+		switch(key) {
+		case '_id':
+			return $('<span>').text(this.data._id);
+		default:
+			return this.generateInput(
+				() => this.data[key].toString(),
+				async newVal => {
+					const val = isNaN(newVal) ? newVal : Number(newVal);
+					if (val === this.data[key]) {
+						return;
+					}
+					return this.updateObject(key, val);
+				}
+			).parent();
+		}
 	}
 }
 
