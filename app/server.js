@@ -60,6 +60,7 @@ app.get('/',
 	)
 );
 
+app.use('/shared', express.static('shared'));
 app.use('/public', express.static('frontend/public'));
 
 if (!process.env.PROD) {

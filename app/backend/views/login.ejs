@@ -1,22 +1,46 @@
 <!doctype html>
 <html lang="en">
+
   <head>
     <link href="/public/CDN/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet"
       integrity="sha384-xeJqLiuOvjUBq3iGOjvSQSIlwrpqjSHXpduPd6rQpuiM3f5/ijby8pCsnbu5S81n" />
     <link href="/public/CDN/bootstrap@5.2.2/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-wpMrDdCyrWWMh7jp301ZVf5iM1FHIfHA6cmCdcayg7zBZm0KfYJt8GBunp2YMK7p" />
+    <link href="/public/css/style.css" rel="stylesheet"/>
   </head>
-  <body>
+
+  <body class="loginbody">
     <% if(error) { %>
-    <h4>Error logging in</h4>
-    <p>there might be a problem with your username or password</p>
-    <p>if you don't have a user, register at the link below</p>
+      <header>
+        <h4>Error logging in</h4>
+        <p>
+          <span>there might be a problem with your username or password</span>
+          <br/>
+          <span>if you don't have a user, register at the link below</span>
+        </p>
+      </header>
     <% } %>
-    <form action="/login" method="post">
-        <input required pattern="<%= usernamePattern %>" name="username">
-        <input required pattern="<%= passwordPattern %>" name="password" type="password">
-        <input type="submit">
-    </form>
-    <a href="/register">Register</a>
+
+    <main class="container-login" id="container-login">
+      <section class="form-container sign-in-container">
+        <form class="l-form" action="/login" method="post">
+          <h1>Sign in</h1>
+          <input required pattern="<%= usernamePattern %>" name="username" class="l-input" placeholder="Username">
+          <input required pattern="<%= passwordPattern %>" name="password" type="password" class="l-input" placeholder="Password">
+          <button class="sign">Sign In</button>
+        </form>
+      </section>
+
+      <section class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel">
+            <h1>Hello, Friend!</h1>
+            <p class="jointext">Enter your personal details and join us</p>
+
+            <a href="/register" class="signup" id="signUp">Sign Up</a>
+          </div>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
