@@ -691,5 +691,10 @@ cursor: pointer;
 
 #register div button {
    margin-top: -30%;
-   width: 30px
+   width: 30px;
+   margin-left: 4px;
+}
+
+#register p {
+   font-size: 10px;
 }
