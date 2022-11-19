@@ -118,6 +118,7 @@ export default {
 			price: req.body.price,
 			catagory: req.body.catagory,
 			img: req.body.img,
+			seller: req.body.seller,
 			alt: req.body.alt || ''
 		};
 
@@ -202,6 +203,38 @@ export default {
 				res.status(500).send({
 					message:
 						err.message || 'an error occurred while receiving products amount'
+				});
+			});
+	},
+	bySeller(req, res) {
+		Product
+			.aggregate()
+			.group({
+				_id: '$seller',
+				count: { $sum: 1 },
+				products: { $push: {
+					_id: '$_id',
+					name: '$name',
+					price: '$price',
+					catagory: '$catagory',
+					img: '$img',
+					alt: '$alt'
+				}}
+			})
+			.exec()
+			.then(data => {
+				if (!data) {
+					res.status(404).send({
+						message: 'no products'
+					});
+					return;
+				}
+
+				res.send(data);
+			})
+			.catch(err => {
+				res.status(500).send({
+					message: err.message || 'error getting products by sellers'
 				});
 			});
 	}

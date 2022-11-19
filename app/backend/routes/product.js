@@ -4,6 +4,7 @@ import products from '../controllers/product.js';
 
 export default Router()
 	.get('/amount', products.amount)
+	.get('/by-seller', products.bySeller)
 	.post('/', products.create)
 	.get('/', products.findAll)
 	.get('/:id', products.findOne)
