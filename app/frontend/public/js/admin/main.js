@@ -137,7 +137,13 @@ function createProductsByCatagory() {
 function createProductsBySeller() {
 	fetch('/api/products/by-seller')
 		.then(res => res.json())
-		.then(data => { console.log(data); });
+		.then(data => { CONTENT.append(BarChart(data, {
+			x: d => d.name,
+			y: d => d.count,
+			xDomain: d3.groupSort(data, ([d]) => -d.amount, d => d.catagory),
+			yLabel: "↑ Products Amount",
+			color: "steelblue"
+})) })
 }
 
 $(() => {
