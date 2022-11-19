@@ -687,12 +687,7 @@ cursor: pointer;
    margin-top: 4px;
 }
 
-#register div {
-   width: 190px;
-   height: 75px;
-}
-
 #register div button {
-   width: 50px;
-   height: 30%;
+   margin-top: -30%;
+   width: 30px
 }
