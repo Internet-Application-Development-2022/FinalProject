@@ -670,7 +670,256 @@ cursor: pointer;
    right: 10px;
 }
 
+/* ---------------- Login Page ---------------- */
+
+.loginbody {
+	background: #f6f5f7;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	font-family: 'Montserrat', sans-serif;
+	height: 100vh;
+	margin: -20px 0 50px;
+}
+
+
+.jointext{
+	font-size: 14px;
+	font-weight: 100;
+	line-height: 20px;
+	letter-spacing: 0.5px;
+	margin: 20px 0 30px;
+}
+
+
+.sign {
+	border-radius: 20px;
+	border: 1px solid #088178;
+	background-color: #088178;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    margin-top: 10px;
+}
+
+.signup {
+	border-radius: 20px;
+	border: 1px solid #fff;
+	background-color: #fff;
+	color: #1a1a1a;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    margin-top: 10px;
+}
+
+.sign:active {
+	transform: scale(0.95);
+}
+
+.signup:active {
+	transform: scale(0.95);
+}
+
+.l-form {
+	background-color: #FFFFFF;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 0 50px;
+	height: 100%;
+	text-align: center;
+}
+
+.l-input {
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 100%;
+}
+
+.container-login {
+	background-color: #fff;
+	border-radius: 10px;
+  	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
+			0 10px 10px rgba(0,0,0,0.22);
+	position: relative;
+	overflow: hidden;
+	width: 768px;
+	max-width: 100%;
+	min-height: 480px;
+}
+
+.form-container {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	transition: all 0.6s ease-in-out;
+}
+
+.sign-in-container {
+	left: 0;
+	width: 50%;
+	z-index: 2;
+}
+.forgot{
+    text-decoration: none;
+    color: #088178;
+}
+
+.overlay-container {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 50%;
+	height: 100%;
+	overflow: hidden;
+	transition: transform 0.6s ease-in-out;
+	z-index: 100;
+}
+
+.overlay {
+	background: #088178;
+
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: 0 0;
+	color: #FFFFFF;
+	position: relative;
+	left: -100%;
+	height: 100%;
+	width: 200%;
+}
+
+.overlay-panel {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	padding: 0 40px;
+	text-align: center;
+	top: 0;
+	height: 100%;
+	width: 50%;
+	right: 0;
+}
+
+input.disabled {
+   background: red;
+}
+
+/* ---------------- Admin Page ---------------- */
+
+main#admin-main {
+   margin: 15px;
+}
+
+.chat-btn {
+   position: fixed;
+   right: 14px;
+   bottom: 30px;
+   cursor: pointer
+}
+
+.chat-btn .close {
+   display: none
+}
+
+.chat-btn i {
+   transition: all 0.9s ease
+}
+
+.chat-btn i {
+   font-size: 22px;
+   color: #fff !important
+}
+
+.chat-btn {
+   width: 50px;
+   height: 50px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border-radius: 50px;
+   background-color: #088178;
+   color: #fff;
+   font-size: 22px;
+   border: none
+}
+
+.wrapper {
+   position: fixed;
+   right: 20px;
+   bottom: 100px;
+   width: 300px;
+   background-color: rgb(247, 247, 247);
+   border-radius: 5px;
+   border-color: #088178;
+   display: none;
+}
+
+#check:checked~.wrapper {
+   display: initial;
+}
+
+.chat-header {
+   padding: 13px;
+   background-color: #088178;
+   border-radius: 5px 5px 0px 0px;
+   margin-bottom: 5px;
+   color: #fff
+}
+
+.chat-form {
+   padding: 1px
+}
+
+.chat-form input,
+textarea,
+button {
+   margin-bottom: 10px
+}
+
+.chat-form textarea {
+   resize: none;
+   height: 180px;
+   background-color: rgb(247, 247, 247);
+}
+
+.form-control:focus,
+.btn:focus {
+   box-shadow: none;
+}
+
+.btn,
+.btn:focus,
+.btn:hover {
+   background-color: #088178;
+   border: #088178
+}
+
+#check {
+   display: none !important
+}
+
+input.table-input {
+   width: 130px;
+   text-align: center;
+}
+
 /* Supplier Page */
+
 #sig-canvas {
    border: 2px dotted #CCCCCC;
    border-radius: 15px;
@@ -681,18 +930,21 @@ cursor: pointer;
    text-align: center;
    margin: auto;
    width: 400px;
-   background-color: #eceefb;
-   
 }
 
 #register * {
    margin-top: 4px;
 }
 
+#register button {
+   color: white;
+}
+
 #register div button {
    margin-top: -30%;
    width: 30px;
    margin-left: 4px;
+   background-color: black;
 }
 
 #register p {

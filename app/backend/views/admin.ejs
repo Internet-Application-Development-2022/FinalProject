@@ -1,15 +1,35 @@
 <!doctype html>
 <html lang="en">
+
   <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <script type="importmap">
+      {
+        "imports": {
+        "jquery-src": "/public/CDN/jquery-3.6.1.min.js",
+        "jquery": "/public/CDN/jquery.js",
+        "socket.io-client": "/public/CDN/socket.io.esm.min.js",
+        "shared": "/shared/entities.js"
+        }
+      }
+    </script>
     <link href="/public/CDN/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet"
       integrity="sha384-xeJqLiuOvjUBq3iGOjvSQSIlwrpqjSHXpduPd6rQpuiM3f5/ijby8pCsnbu5S81n" />
     <link href="/public/CDN/bootstrap@5.2.2/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-wpMrDdCyrWWMh7jp301ZVf5iM1FHIfHA6cmCdcayg7zBZm0KfYJt8GBunp2YMK7p" />
+    <link href="/public/css/style.css" rel="stylesheet" />
+    <script type="module" src="/public/js/admin/main.js"></script>
   </head>
   <body>
-    <p>
+    <header id="header">
         <h1>Welcome admin <%= username %>!</h1>
-        <a href="/logout">logout</a>
-    </p>
+        <a href="/logout"> <button class="btn btn-primary">logout</button></a>
+    </header>
+
+    <main id="admin-main">
+    </main>
+
   </body>
 </html>

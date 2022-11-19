@@ -2,8 +2,7 @@ const { TWITTER_BEARER_TOKEN } = process.env;
 
 const TWITTER_URL = 'https://api.twitter.com';
 const API_DIR = '/2/tweets/search/recent';
-const AMAZON_QUERY = 'query=%23amazon';
-const URL_PARAMS = `?${AMAZON_QUERY}&expansions=author_id&user.fields=profile_image_url`;
+
 const QUERY_PARAMS = {
 	query: '%23amazon',
 	expansions: 'author_id',

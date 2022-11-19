@@ -10,10 +10,38 @@ const NAVIGATION_PAGES = [
 	SupplierPage
 ];
 
+const requestNotificationPermission = () => new Promise((resolve, reject) => {
+	if(!('Notification' in window)) {
+		reject('Not supported');
+	}
+	else if (Notification.permission === 'granted') {
+		resolve();
+	}
+	else if(Notification.permission !== 'denied') {
+		Notification.requestPermission()
+			.then(permission => {
+				if(permission === 'granted') {
+					resolve();
+				}
+			});
+	}
+	else {
+		reject('request denied');
+	}
+});
+
 $(() => {
-	//const socket = io();
-	console.log('ready');
-	//console.log(socket);
+	requestNotificationPermission().then(() => {
+		const socket = io();
+		console.log('socketio initialized');
+
+		socket.on('advertise', ad => {
+			new Notification(ad.title, {
+				body: ad.text,
+				icon: ad.img
+			});
+		});
+	});
 
 	$('#header > a').on('click', () => PageRouter.go());
 
@@ -22,7 +50,7 @@ $(() => {
 			.text(route.name)
 			.on('click', () => PageRouter.go(route));
 
-		PageRouter.addSelectListener(selected => {
+		PageRouter.addSelectListener(() => {
 			if (PageRouter.isSelected(route)) {
 				button.addClass('active');
 			}

@@ -9,7 +9,8 @@ do
 		\"price\": $(( $RANDOM % 200 )),
 		\"catagory\": \"catagory $(( $RANDOM % 4 ))\",
 		\"img\": \"/public/img/products/$img.jpg\",
-		\"alt\": \"$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c $(( $RANDOM % 20 + 5 )))\"
+		\"alt\": \"$(LC_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c $(( $RANDOM % 20 + 5 )))\",
+		\"seller\": \"636f9d958547369c5e81cbf1\"
 	}";
 	echo;
 done;

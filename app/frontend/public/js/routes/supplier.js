@@ -10,6 +10,7 @@ export class SupplierRoute extends Route {
 		super('Supplier');
 
 		this.signatureInput = $('<input>')
+			.prop('required', true)
 			.attr({
 				type: 'text',
 				name: 'signature'
@@ -17,7 +18,7 @@ export class SupplierRoute extends Route {
 			.hide();
 
 		this.signatureData = {
-      hasData: false,
+			hasData: false,
 			drawing: false,
 			mousePos: {
 				x: 0,
@@ -35,9 +36,9 @@ export class SupplierRoute extends Route {
 				width: 175,
 				height: 75
 			})
-      .css('background-color', 'white')
+			.css('background-color', 'white')
 			.on('mousedown', e => {
-        this.hasData = true;
+				this.hasData = true;
 				this.signatureData.drawing = true;
 				this.signatureData.lastPos = this.getMousePos(e);
 			})
@@ -47,9 +48,9 @@ export class SupplierRoute extends Route {
 			.on('mousemove', e => {
 				this.signatureData.mousePos = this.getMousePos(e);
 			})
-      .on('mouseleave', e => {
-        this.signatureData.drawing = false
-      });
+			.on('mouseleave', () => {
+				this.signatureData.drawing = false;
+			});
 
 		this.ctx.strokeStyle = '#222222';
 		this.ctx.lineWidth = 2;
@@ -65,12 +66,9 @@ export class SupplierRoute extends Route {
 		return this.canvas[0].getContext('2d');
 	}
 
-	async onSelect(content, params) {
+	async onSelect(content) {
 		$(content)
-			.append(
-				this.genRegisterMenu()
-			);
-    $('body').css('background-color','#eceefb')
+			.append(this.genRegisterMenu());
 	}
 
 	genRegisterMenu() {
@@ -81,127 +79,96 @@ export class SupplierRoute extends Route {
 			.append($('<p>')
 				.text('Enter your information below and we will contact you to approve the request.')
 			)
-			.append(
-				$('<form>')
-					.addClass('pro-container')
+			.append($('<form>')
+				.addClass('pro-container')
+				.attr({
+					action: '/api/seller-requests',
+					method: 'post'
+				})
+				.append(this.signatureInput)
+				.append($('<input>')
+					.addClass('form-control')
+					.prop('required', true)
 					.attr({
-						action: '/api/seller-requests',
-						method: 'post'
+						placeholder: 'Full Name',
+						type: 'text',
+						name: 'name'
 					})
-					.append(
-						this.signatureInput
-            .prop('required',true)
+				).append($('<input>')
+					.addClass('form-control')
+					.prop('required', true)
+					.attr({
+						placeholder: 'Email',
+						type: 'email',
+						name: 'email'
+					})
+				).append($('<input>')
+					.addClass('form-control')
+					.prop('required', true)
+					.attr({
+						placeholder: 'Phone Number',
+						type: 'tel',
+						name: 'phone',
+						pattern: '[0-9]{10}'
+					})
+				).append($('<input>')
+					.addClass('form-control')
+					.prop('required', true)
+					.attr({
+						placeholder: 'Latitude',
+						type: 'number',
+						name: 'location[0]'
+					})
+				).append($('<input>')
+					.addClass('form-control')
+					.prop('required', true)
+					.attr({
+						placeholder: 'Longitude',
+						type: 'number',
+						name: 'location[1]'
+					})
+				).append($('<textarea>')
+					.addClass('form-control')
+					.prop('required', true)
+					.attr({
+						placeholder: 'Request Description',
+						name: 'text',
+					})
+				).append($('<div>')
+					.attr({
+						id: 'empty',
+						title: 'Empty signature',
+						style: 'color: red'
+					})
+					.text('Signarute is required and cannot be empty')
+					.hide()
+				).append($('<div>')
+					.append(this.canvas.addClass('col-auto'))
+					.append($('<button>')
+						.addClass('col-2 btn btn-primary btn-sm')
+						.attr('type', 'button')
+						.append($('<i>').addClass('bi bi-trash'))
+						.on('click', () => {
+							this.hasData = false;
+							this.canvas.attr('width', this.canvas.attr('width'));
+						})
 					)
-					.append(
-						$('<input>')
-							.addClass('form-control')
-              .prop('required',true)
-							.attr({
-								placeholder: 'Full Name',
-								type: 'text',
-								name: 'name'
-							})
-					)
-					.append(
-						$('<input>')
-							.addClass('form-control')
-              .prop('required',true)
-							.attr({
-								placeholder: 'Email',
-								type: 'email',
-								name: 'email'
-							})
-					)
-					.append(
-						$('<input>')
-							.addClass('form-control')
-              .prop('required',true)
-							.attr({
-								placeholder: 'Phone Number',
-								type: 'tel',
-								name: 'phone',
-								pattern: '[0-9]{10}'
-							})
-					)
-					.append(
-						$('<input>')
-							.addClass('form-control')
-              .prop('required',true)
-							.attr({
-								placeholder: 'Latitude',
-								type: 'number',
-								name: 'location[0]'
-							})
-					)
-					.append(
-						$('<input>')
-							.addClass('form-control')
-              .prop('required',true)
-							.attr({
-								placeholder: 'Longitude',
-								type: 'number',
-								name: 'location[1]'
-							})
-					)
-					.append(
-						$('<textarea>')
-							.addClass('form-control')
-              .prop('required',true)
-							.attr({
-                placeholder: 'Request Description',
-                name: 'text',
-              })
-					)
-          .append(
-            $('<div>')
-            .attr({
-              id: 'empty',
-              title: 'Empty signature',
-              style: 'color: red'
-            })
-            .text('Signarute is required and cannot be empty')
-            .hide()
-          )
-          .append(
-            $('<div>')
-            .append(
-              this.canvas
-              .addClass('col-auto')
-            )
-            .append(
-              $('<button>')
-                  .addClass('col-2 btn btn-primary btn-sm')
-                  .attr('type', 'button')
-                  .append(
-                    $('<i>')
-                    .addClass('bi bi-trash')
-                  )
-                  .click(() => {
-                    this.hasData = false;
-                    this.canvas.attr('width', this.canvas.attr('width'));
-                  })
-            )
-          )
-					.append(
-						$('<button>')
-							.addClass('btn btn-outline-dark')
-							.attr('type', 'submit')
-							.text('Submit')
-							.on('click', () => {
-                if (this.hasData) {
-								  this.signatureInput.val(this.canvas[0].toDataURL());
-                }
-                else {
-                  this.signatureEmpty()
-                }
-							})
-					)
+				).append($('<button>')
+					.addClass('btn btn-outline-dark')
+					.attr('type', 'submit')
+					.text('Submit')
+					.on('click', () => {
+						this.hasData ?
+							this.signatureInput.val(this.canvas[0].toDataURL()) :
+							this.signatureEmpty();
+					})
+				)
 			);
 	}
 
-  signatureEmpty() {
-    $('#empty').show();
-  }
+	signatureEmpty() {
+		$('#empty').show();
+	}
 
 	getMousePos(mouseEvent) {
 		var rect = this.canvas[0].getBoundingClientRect();
@@ -224,8 +191,5 @@ export class SupplierRoute extends Route {
 
 	clearCanvas() {
 		this.canvas.attr('width', this.canvas.attr('width'));
-	}
-
-	setupSignature() {
 	}
 }

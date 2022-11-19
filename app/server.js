@@ -60,6 +60,7 @@ app.get('/',
 	)
 );
 
+app.use('/shared', express.static('shared'));
 app.use('/public', express.static('frontend/public'));
 
 if (!process.env.PROD) {
@@ -75,7 +76,12 @@ const httpServer = createServer(app);
 const io = new Server(httpServer);
 
 io.on('connection', soc => {
-	// something
+	console.log(soc.id + ' connected');
+
+	soc.on('advertise', msg => {
+		console.log('emitting: ' + msg);
+		io.emit('advertise', msg);
+	});
 });
 
 // set port, run server

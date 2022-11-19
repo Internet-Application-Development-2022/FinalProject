@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import { Route } from './router.js';
-import { PageRouter, ProductPage } from '../routes.js';
 
 export class ProductRoute extends Route {
 	fetchedProduct;
@@ -17,16 +16,14 @@ export class ProductRoute extends Route {
 		await this.fetchProduct(params.id);
 
 		$(content)
-			.append(
-				this.genProductD(params.id)
-			)
+			.append(this.genProduct());
 	}
 
 	async fetchProduct(id) {
 		this.fetchedProduct = await (await fetch('/api/products/' + id))?.json();
 	}
 
-	genProductD(id) {
+	genProduct() {
 		return $('<section>')
 			.attr('id', 'product-details')
 			.addClass('section-p1')
@@ -60,7 +57,7 @@ export class ProductRoute extends Route {
 				.append($('<button>').addClass('btn btn-success').text('Add to Cart'))
 				.append($('<h4>').text('Product Details'))
 				.append($('<span>').text('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id estlaborum.'))
-			)
+			);
 	}
 }
 

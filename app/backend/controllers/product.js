@@ -118,13 +118,17 @@ export default {
 			price: req.body.price,
 			catagory: req.body.catagory,
 			img: req.body.img,
+			seller: req.body.seller,
 			alt: req.body.alt || ''
 		};
 
 		const cleanObject = Object
 			.entries(parsedRequestBody)
-			.filter(ent => ent[1] === undefined || ent[1] == null || Number.isNaN(ent[1]))
-			.reduce((obj, arr) => obj[arr[0]] = obj[1], {});
+			.filter(([key, val]) => !(val === undefined || val == null || Number.isNaN(val)))
+			.reduce((obj, [key, val]) => {
+				obj[key] = val;
+				return obj;
+			}, {});
 
 		Product
 			.findByIdAndUpdate(id, cleanObject)
@@ -199,6 +203,38 @@ export default {
 				res.status(500).send({
 					message:
 						err.message || 'an error occurred while receiving products amount'
+				});
+			});
+	},
+	bySeller(req, res) {
+		Product
+			.aggregate()
+			.group({
+				_id: '$seller',
+				count: { $sum: 1 },
+				products: { $push: {
+					_id: '$_id',
+					name: '$name',
+					price: '$price',
+					catagory: '$catagory',
+					img: '$img',
+					alt: '$alt'
+				}}
+			})
+			.exec()
+			.then(data => {
+				if (!data) {
+					res.status(404).send({
+						message: 'no products'
+					});
+					return;
+				}
+
+				res.send(data);
+			})
+			.catch(err => {
+				res.status(500).send({
+					message: err.message || 'error getting products by sellers'
 				});
 			});
 	}

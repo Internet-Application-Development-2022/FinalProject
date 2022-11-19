@@ -4,11 +4,27 @@
   "description": "",
   "main": "server.js",
   "type": "module",
+  "author": "",
+  "license": "ISC",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "debug": "nodemon --watch backend --inspect-brk=0.0.0.0 -L",
-    "debuggable": "nodemon --watch backend --inspect=0.0.0.0 -L",
+    "debug": "nodemon --inspect-brk=0.0.0.0 -L",
+    "debuggable": "nodemon --inspect=0.0.0.0 -L",
     "lint": "eslint --fix ."
+  },
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "mongoose": "^6.6.2",
+    "socket.io": "^4.5.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.24.0",
+    "nodemon": "^2.0.20"
+  },
+  "nodemonConfig": {
+    "ignore": ["frontend/", "Dockerfile", ".dockerignore", ".eslintrc.json"]
   },
   "repository": {
     "type": "git",
@@ -21,22 +37,8 @@
     "api",
     "mongodb"
   ],
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/Internet-Application-Development-2022/FinalProject/issues"
   },
-  "homepage": "https://github.com/Internet-Application-Development-2022/FinalProject#readme",
-  "dependencies": {
-    "dotenv": "^16.0.2",
-    "ejs": "^3.1.8",
-    "express": "^4.18.1",
-    "express-session": "^1.17.3",
-    "mongoose": "^6.6.2",
-    "socket.io": "^4.5.2"
-  },
-  "devDependencies": {
-    "eslint": "^8.24.0",
-    "nodemon": "^2.0.20"
-  }
+  "homepage": "https://github.com/Internet-Application-Development-2022/FinalProject#readme"
 }

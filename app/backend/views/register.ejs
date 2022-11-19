@@ -1,30 +1,52 @@
 <!doctype html>
 <html lang="en">
+
   <head>
     <link href="/public/CDN/bootstrap-icons@1.9.1/font/bootstrap-icons.css" rel="stylesheet"
       integrity="sha384-xeJqLiuOvjUBq3iGOjvSQSIlwrpqjSHXpduPd6rQpuiM3f5/ijby8pCsnbu5S81n" />
     <link href="/public/CDN/bootstrap@5.2.2/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-wpMrDdCyrWWMh7jp301ZVf5iM1FHIfHA6cmCdcayg7zBZm0KfYJt8GBunp2YMK7p" />
-    </head>
-  <body>
+    <link href="/public/css/style.css" rel="stylesheet"/>
+  </head>
+  
+  <body class="loginbody">
     <% if(error) { %>
-    <h4>Error registering</h4>
-    <p>the username may already be in use</p>
-    <p>if you already have a user, login at the link below</p>
+      <header>
+        <h4>Error registering</h4>
+        <p>
+          <span>the username may already be in use</span>
+          <br/>
+          <span>if you already have a user, login at the link below</span>
+        </p>
+      </header>
     <% } %>
-    <p>
-      <b>username format:</b>
-      alphanumeric value of between 3 and 64 characters
-    </p>
-    <p>
-      <b>password format:</b>
-      between 8 and 64 characters
-    </p>
-    <form action="/register" method="post">
-        <input required pattern="<%= usernamePattern %>" name="username">
-        <input required pattern="<%= passwordPattern %>" name="password" type="password">
-        <input type="submit">
-    </form>
-    Already a member? <a href="/login">sign in</a>
+
+    <main class="container-login" id="container-login">
+      <section class="form-container sign-in-container">
+        <form class="l-form" action="/register" method="post">
+          <h1>Register</h1>
+          <label>
+            alphanumeric value of between 3 and 64 characters
+            <input required pattern="<%= usernamePattern %>" name="username" class="l-input" placeholder="Username">
+          </label>
+          <label>
+            between 8 and 64 characters
+            <input required pattern="<%= passwordPattern %>" name="password" type="password" class="l-input" placeholder="Password">
+          </label>
+          <button class="sign">Register</button>
+        </form>
+      </section>
+
+      <section class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel">
+            <h1>Welcome Back!</h1>
+            <p class="jointext">if you already have an account, then</p>
+
+            <a href="/login" class="signup" id="signUp">login</a>
+          </div>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
