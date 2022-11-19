@@ -17,6 +17,7 @@ export class SupplierRoute extends Route {
 			.hide();
 
 		this.signatureData = {
+      hasData: false,
 			drawing: false,
 			mousePos: {
 				x: 0,
@@ -34,7 +35,9 @@ export class SupplierRoute extends Route {
 				width: 175,
 				height: 75
 			})
+      .css('background-color', 'white')
 			.on('mousedown', e => {
+        this.hasData = true;
 				this.signatureData.drawing = true;
 				this.signatureData.lastPos = this.getMousePos(e);
 			})
@@ -67,6 +70,7 @@ export class SupplierRoute extends Route {
 			.append(
 				this.genRegisterMenu()
 			);
+    $('body').css('background-color','#eceefb')
 	}
 
 	genRegisterMenu() {
@@ -89,7 +93,7 @@ export class SupplierRoute extends Route {
 							.addClass('form-control')
               .prop('required',true)
 							.attr({
-								placeholder: 'name',
+								placeholder: 'Full Name',
 								type: 'text',
 								name: 'name'
 							})
@@ -99,7 +103,7 @@ export class SupplierRoute extends Route {
 							.addClass('form-control')
               .prop('required',true)
 							.attr({
-								placeholder: 'email',
+								placeholder: 'Email',
 								type: 'email',
 								name: 'email'
 							})
@@ -109,7 +113,7 @@ export class SupplierRoute extends Route {
 							.addClass('form-control')
               .prop('required',true)
 							.attr({
-								placeholder: 'phone',
+								placeholder: 'Phone Number',
 								type: 'tel',
 								name: 'phone',
 								pattern: '[0-9]{10}'
@@ -120,7 +124,7 @@ export class SupplierRoute extends Route {
 							.addClass('form-control')
               .prop('required',true)
 							.attr({
-								placeholder: 'lat',
+								placeholder: 'Latitude',
 								type: 'number',
 								name: 'location[0]'
 							})
@@ -130,7 +134,7 @@ export class SupplierRoute extends Route {
 							.addClass('form-control')
               .prop('required',true)
 							.attr({
-								placeholder: 'lon',
+								placeholder: 'Longitude',
 								type: 'number',
 								name: 'location[1]'
 							})
@@ -140,10 +144,20 @@ export class SupplierRoute extends Route {
 							.addClass('form-control')
               .prop('required',true)
 							.attr({
-                placeholder: 'Request description',
+                placeholder: 'Request Description',
                 name: 'text',
               })
 					)
+          .append(
+            $('<div>')
+            .attr({
+              id: 'empty',
+              title: 'Empty signature',
+              style: 'color: red'
+            })
+            .text('Signarute is required and cannot be empty')
+            .hide()
+          )
           .append(
             $('<div>')
             .append(
@@ -179,6 +193,7 @@ export class SupplierRoute extends Route {
                     )
                   )
                   .click(() => {
+                    this.hasData = false;
                     this.canvas.attr('width', this.canvas.attr('width'));
                   })
             )
@@ -189,11 +204,20 @@ export class SupplierRoute extends Route {
 							.attr('type', 'submit')
 							.text('Submit')
 							.on('click', () => {
-								this.signatureInput.val(this.canvas[0].toDataURL());
+                if (this.hasData) {
+								  this.signatureInput.val(this.canvas[0].toDataURL());
+                }
+                else {
+                  this.signatureEmpty()
+                }
 							})
 					)
 			);
 	}
+
+  signatureEmpty() {
+    $('#empty').show();
+  }
 
 	getMousePos(mouseEvent) {
 		var rect = this.canvas[0].getBoundingClientRect();
